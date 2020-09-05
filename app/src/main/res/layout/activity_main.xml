@@ -33,7 +33,7 @@
         android:id="@+id/contrasenia1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingrese su contraseña"
+        android:hint="Ingrese una contraseña"
         android:inputType="textPassword"/>
     <EditText
         android:id="@+id/contrasenia2"
@@ -85,7 +85,8 @@
             android:layout_height="match_parent"
             android:hint="Ingrese CCV"
             android:inputType="number"
-            android:paddingRight="60dp"/>
+            android:paddingRight="60dp"
+            android:enabled="false"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -96,21 +97,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Dia: ">
+        </TextView>
         <Spinner
-            android:id="@+id/diasVencimiento"
+            android:id="@+id/diaVencimiento"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:entries="@array/diasVencimiento"
             android:paddingRight="80dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Año: ">
+        </TextView>
         <Spinner
             android:id="@+id/anioVencimiento"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:entries="@array/anioVencimiento"
+            android:entries="@array/aniosVencimiento"
             android:paddingRight="80dp"/>
     </LinearLayout>
     <EditText
@@ -156,16 +167,18 @@
         android:max="1500"
         android:visibility="gone"/>
     <CheckBox
+        android:id="@+id/terminosycondiciones"
         android:layout_marginTop="4mm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Acepta Términos y Condiciones"/>
+
     <Button
-        android:layout_marginTop="4mm"
         android:id="@+id/botonregistrarme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Registrarme"
+        android:layout_marginTop="4mm"
         android:background="#3db8ff"
-        />
+        android:hint="Registrarme"
+        android:onClick="Registrar" />
 </LinearLayout>
