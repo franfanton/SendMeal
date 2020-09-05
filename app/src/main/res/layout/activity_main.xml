@@ -4,11 +4,168 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tvSaludo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Complete los campos solicitados:"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese su Nombre"
+        android:inputType="text"
+        android:layout_marginTop="3mm"/>
 
+    <EditText
+        android:id="@+id/apellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese su apellido"
+        android:inputType="text"
+        />
+    <EditText
+        android:id="@+id/contrasenia1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese su contraseña"
+        android:inputType="textPassword"/>
+    <EditText
+        android:id="@+id/contrasenia2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese nuevamente la contraseña"
+        android:inputType="textPassword"/>
+    <EditText
+        android:id="@+id/correo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese correo electronico"
+        android:inputType="textEmailAddress"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de tarjeta"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/botonDebito"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Debito"/>
+        <RadioButton
+            android:id="@+id/botonCredito"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Credito"/>
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/numeroTarjeta"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Ingrese tarjeta"
+            android:inputType="number"
+            android:paddingRight="130dp"/>
+        <EditText
+            android:id="@+id/codigoCCV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Ingrese CCV"
+            android:inputType="number"
+            android:paddingRight="60dp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de Vencimiento">
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/diasVencimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:entries="@array/diasVencimiento"
+            android:paddingRight="80dp"/>
+        <Spinner
+            android:id="@+id/anioVencimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:entries="@array/anioVencimiento"
+            android:paddingRight="80dp"/>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/numeroCBU"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="CBU"
+        android:inputType="number"/>
+    <EditText
+        android:id="@+id/alias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Alias CBU"
+        android:inputType="number"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="¿Desea realizar una carga inicial?"
+            android:paddingRight="150dp"/>
+        <Switch
+            android:id="@+id/switchCargaInicial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textoCargaInicial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+    <SeekBar
+        android:id="@+id/seekBarCargaInicial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:max="1500"
+        android:visibility="gone"/>
+    <CheckBox
+        android:layout_marginTop="4mm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acepta Términos y Condiciones"/>
+    <Button
+        android:layout_marginTop="4mm"
+        android:id="@+id/botonregistrarme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Registrarme"
+        android:background="#3db8ff"
+        />
 </LinearLayout>
