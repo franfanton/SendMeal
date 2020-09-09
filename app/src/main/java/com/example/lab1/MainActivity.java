@@ -1,10 +1,13 @@
 package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -16,24 +19,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener{
+import com.example.lab1.model.CuentaBancaria;
+import com.example.lab1.model.Tarjeta;
+import com.example.lab1.model.Usuario;
+
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private ProgressBar progressBar;
     private SeekBar seekBar;
-    private EditText nombre,apellido,contrasenia1,contrasenia2,correo,numeroTarjeta,numeroCCV;
+    private EditText nombre,contrasenia1,contrasenia2,correo,numeroTarjeta,numeroCCV,cbu,alias;
     private RadioButton tarjetaDebito,tarjetaCredito;
-    private Spinner diaVencimiento,anioVencimiento;
+    private Spinner mesVencimiento,anioVencimiento;
     private CheckBox terminosycondiciones;
     private Switch switchCargaInicial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        View boton = findViewById(R.id.switchCargaInicial);
-        boton.setOnClickListener(this);
+        final Button boton = findViewById(R.id.botonregistrarme);
 
         nombre = (EditText) findViewById(R.id.nombre);
-        apellido = (EditText) findViewById(R.id.apellido);
         contrasenia1 = (EditText) findViewById(R.id.contrasenia1);
         contrasenia2 = (EditText) findViewById(R.id.contrasenia2);
         correo = (EditText) findViewById(R.id.correo);
@@ -41,11 +48,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         numeroCCV = (EditText) findViewById(R.id.codigoCCV);
         tarjetaDebito = (RadioButton) findViewById(R.id.botonDebito);
         tarjetaCredito = (RadioButton) findViewById(R.id.botonCredito);
-        diaVencimiento = (Spinner) findViewById(R.id.diaVencimiento);
+        cbu = (EditText) findViewById(R.id.numeroCBU);
+        alias = (EditText) findViewById(R.id.alias);
+        mesVencimiento = (Spinner) findViewById(R.id.mesVencimiento);
         anioVencimiento = (Spinner) findViewById(R.id.anioVencimiento);
         terminosycondiciones = (CheckBox) findViewById(R.id.terminosycondiciones);
         switchCargaInicial = (Switch) findViewById(R.id.switchCargaInicial);
-        diaVencimiento.setEnabled(false);
+        mesVencimiento.setEnabled(false);
         anioVencimiento.setEnabled(false);
 
         numeroTarjeta.addTextChangedListener(new TextWatcher() {
@@ -61,13 +70,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!(numeroTarjeta.getText().toString().isEmpty())){
-                    diaVencimiento.setEnabled(true);
+                if (!(numeroTarjeta.getText().toString().isEmpty())) {
+                    mesVencimiento.setEnabled(true);
                     anioVencimiento.setEnabled(true);
                     numeroCCV.setEnabled(true);
                 }
-                if(numeroTarjeta.getText().toString().isEmpty()){
-                    diaVencimiento.setEnabled(false);
+                if (numeroTarjeta.getText().toString().isEmpty()) {
+                    mesVencimiento.setEnabled(false);
                     anioVencimiento.setEnabled(false);
                     numeroCCV.setEnabled(false);
                 }
@@ -76,22 +85,126 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
         textView = (TextView) findViewById(R.id.textoCargaInicial);
         seekBar = (SeekBar) findViewById(R.id.seekBarCargaInicial);
-        textView.setText("Credito Inicial: "+ seekBar.getProgress()+"/"+seekBar.getMax());
+        textView.setText("Credito Inicial: " + seekBar.getProgress() + "/" + seekBar.getMax());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textView.setText("Credito Inicial: " + progress + "/" +seekBar.getMax());
+                textView.setText("Credito Inicial: " + progress + "/" + seekBar.getMax());
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-    }
 
+        switchCargaInicial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (switchCargaInicial.isChecked()) {
+                    seekBar.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                } else {
+                    seekBar.setVisibility(View.GONE);
+                    textView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        terminosycondiciones.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    boton.setEnabled(true);
+                } else {
+                    boton.setEnabled(false);
+                }
+
+            }
+        });
+
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                Calendar calendar = Calendar.getInstance();
+                int mesAhora = calendar.get(Calendar.MONTH)+1;
+                int anioAhora = calendar.get(Calendar.YEAR);
+                int mesVencTarj = 0;
+                int anioVencTarj = 0;
+
+                if(nombre.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo nombre esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if(contrasenia1.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo contraseña esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if(contrasenia2.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo repetir contraseña esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if(!(contrasenia1.getText().toString().equals(contrasenia2.getText().toString()))){
+                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
+                }
+                else if(correo.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo correo esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if (!(correo.getText().toString().trim().matches(emailPattern))) {
+                    Toast.makeText(getApplicationContext(),"Ingrese un correo valido",Toast.LENGTH_SHORT).show();
+                }
+                else if(!(tarjetaDebito.isChecked() || tarjetaCredito.isChecked())){
+                    Toast.makeText(getApplicationContext(), "Seleccione el tipo de tarjeta.", Toast.LENGTH_SHORT).show();
+                }
+                else if(numeroTarjeta.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo de numero de tarjeta esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if(numeroCCV.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "El campo CCV esta vacio.", Toast.LENGTH_SHORT).show();
+                }
+                else if(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
+                    Toast.makeText(getApplicationContext(), "Seleccione el mes de vencimiento.", Toast.LENGTH_SHORT).show();
+                }
+                else if(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
+                    Toast.makeText(getApplicationContext(), "Seleccione el año de vencimiento.", Toast.LENGTH_SHORT).show();
+                }
+
+                else if(switchCargaInicial.isChecked()){
+                    int value = seekBar.getProgress();
+                    if(value == 0){
+                        Toast.makeText(getApplicationContext(), "Si realiza un credito inicial debe seleccionar un monto.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if(!(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
+                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))){
+                    mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
+                    anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
+                    if(anioVencTarj<=anioAhora){
+                        Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
+                    CuentaBancaria cuentaUsuario = new CuentaBancaria(cbu.getText().toString(), alias.getText().toString());
+                    Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), Date, esCredito);
+                    Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1, correo.getText().toString(), (double) 0, tarjetaUsuario, cuentaUsuario);
+
+                }
+            }
+        });
+    }
+}
+
+
+/*
     @Override
     public void onClick(View view) {
         if(view.getId() == findViewById(R.id.switchCargaInicial).getId()){
@@ -108,11 +221,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     public void Registrar(View view){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        Calendar calendar = Calendar.getInstance();
+        int mesAhora = calendar.get(Calendar.MONTH)+1;
+        int anioAhora = calendar.get(Calendar.YEAR);
+        int mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
+        int anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
+
         if(nombre.getText().toString().isEmpty()){
             Toast.makeText(this, "El campo nombre esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(apellido.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo apellido esta vacio.", Toast.LENGTH_SHORT).show();
         }
         else if(contrasenia1.getText().toString().isEmpty()){
             Toast.makeText(this, "El campo contraseña esta vacio.", Toast.LENGTH_SHORT).show();
@@ -135,11 +251,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         else if(numeroTarjeta.getText().toString().isEmpty()){
             Toast.makeText(this, "El campo de numero de tarjeta esta vacio.", Toast.LENGTH_SHORT).show();
         }
-        else if(diaVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
-            Toast.makeText(this, "Seleccione el dia de vencimiento.", Toast.LENGTH_SHORT).show();
+        else if(numeroCCV.getText().toString().isEmpty()){
+            Toast.makeText(this, "El campo CCV esta vacio.", Toast.LENGTH_SHORT).show();
+        }
+        else if(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
+            Toast.makeText(this, "Seleccione el mes de vencimiento.", Toast.LENGTH_SHORT).show();
         }
         else if(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
             Toast.makeText(this, "Seleccione el año de vencimiento.", Toast.LENGTH_SHORT).show();
+        }
+        else if(anioVencTarj<=anioAhora){
+            Toast.makeText(this, "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
         }
         else if(!(terminosycondiciones.isChecked())){
             Toast.makeText(this, "Debe aceptar los terminos y condiciones.", Toast.LENGTH_SHORT).show();
@@ -158,3 +280,4 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 }
+*/

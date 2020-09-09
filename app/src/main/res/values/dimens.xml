@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tam_textos">14sp</dimen>
+    <dimen name="margenes_superiores">4mm</dimen>
+    <dimen name="margenes_inferior">10dp</dimen>
+</resources>

@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">LAB1</string>
-    <string-array name="diasVencimiento">
+    <string name="titulo_form">Complete los campos solicitados:</string>
+    <string name="nombre">Ingrese su Nombre</string>
+    <string name="mail">Ingrese un Correo Electrónico</string>
+    <string name="passwd">Ingrese una Contraseña</string>
+    <string name="rep_passwd">Ingrese Nuevamente su Contraseña</string>
+    <string name="tipo_tarjeta">Tipo de Tarjeta:</string>
+    <string name="debito">Débito</string>
+    <string name="credito">Crédito</string>
+    <string name="tarjeta">Número de Tarjeta</string>
+    <string name="ccv">CCV</string>
+    <string name="mes">Mes</string>
+    <string name="anio">Año</string>
+    <string name="carga">¿Realizar una carga inicial?</string>
+    <string name="term_cond">Acepto los términos y condiciones</string>
+    <string name="registrar">Registrar</string>
+    <string name="cbu">CBU</string>
+    <string name="alias">Alias</string>
+    <string name="fechaVencimiento">Fecha de Vencimiento</string>
+    <string-array name="mesVencimiento">
         <item>:: Seleccione ::</item>
         <item>1</item>
         <item>2</item>
@@ -14,25 +32,6 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
-        <item>29</item>
-        <item>30</item>
-        <item>31</item>
     </string-array>
     <string-array name="aniosVencimiento">
         <item>:: Seleccione ::</item>
