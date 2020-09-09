@@ -24,6 +24,7 @@ import com.example.lab1.model.Tarjeta;
 import com.example.lab1.model.Usuario;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 int anioAhora = calendar.get(Calendar.YEAR);
                 int mesVencTarj = 0;
                 int anioVencTarj = 0;
+                int value = seekBar.getProgress();
 
                 if(nombre.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "El campo nombre esta vacio.", Toast.LENGTH_SHORT).show();
@@ -171,17 +173,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Seleccione el año de vencimiento.", Toast.LENGTH_SHORT).show();
                 }
 
-                else if(switchCargaInicial.isChecked()){
-                    int value = seekBar.getProgress();
-                    if(value == 0){
-                        Toast.makeText(getApplicationContext(), "Si realiza un credito inicial debe seleccionar un monto.", Toast.LENGTH_SHORT).show();
+                else if(switchCargaInicial.isChecked() && value == 0){
+                    Toast.makeText(getApplicationContext(), "Si realiza un credito inicial debe seleccionar un monto.", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
-                    }
-                }
+
                 else if(!(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
-                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))){
+                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
+                ){
                     mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
                     anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
                     if(anioVencTarj<=anioAhora){
@@ -193,91 +191,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
+                    boolean esCredito = tarjetaCredito.isChecked();
+                    Date fechaVencimiento = new Date(anioVencTarj-1900, mesVencTarj, 1);
                     CuentaBancaria cuentaUsuario = new CuentaBancaria(cbu.getText().toString(), alias.getText().toString());
-                    Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), Date, esCredito);
-                    Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1, correo.getText().toString(), (double) 0, tarjetaUsuario, cuentaUsuario);
+                    Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), fechaVencimiento, esCredito);
+                    Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1.getText().toString(), correo.getText().toString(), (double) 0, tarjetaUsuario, cuentaUsuario);
 
                 }
             }
         });
     }
 }
-
-
-/*
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == findViewById(R.id.switchCargaInicial).getId()){
-            if(textView.getVisibility() == View.GONE){
-                textView.setVisibility(View.VISIBLE);
-                seekBar.setVisibility(View.VISIBLE);
-            }
-            else{
-                textView.setVisibility(View.GONE);
-                seekBar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    public void Registrar(View view){
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        Calendar calendar = Calendar.getInstance();
-        int mesAhora = calendar.get(Calendar.MONTH)+1;
-        int anioAhora = calendar.get(Calendar.YEAR);
-        int mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
-        int anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
-
-        if(nombre.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo nombre esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(contrasenia1.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo contraseña esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(contrasenia2.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo repetir contraseña esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(!(contrasenia1.getText().toString().equals(contrasenia2.getText().toString()))){
-            Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
-        }
-        else if(correo.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo correo esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if (!(correo.getText().toString().trim().matches(emailPattern))) {
-            Toast.makeText(getApplicationContext(),"Ingrese un correo valido",Toast.LENGTH_SHORT).show();
-        }
-        else if(!(tarjetaDebito.isChecked() || tarjetaCredito.isChecked())){
-            Toast.makeText(this, "Seleccione el tipo de tarjeta.", Toast.LENGTH_SHORT).show();
-        }
-        else if(numeroTarjeta.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo de numero de tarjeta esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(numeroCCV.getText().toString().isEmpty()){
-            Toast.makeText(this, "El campo CCV esta vacio.", Toast.LENGTH_SHORT).show();
-        }
-        else if(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
-            Toast.makeText(this, "Seleccione el mes de vencimiento.", Toast.LENGTH_SHORT).show();
-        }
-        else if(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::")){
-            Toast.makeText(this, "Seleccione el año de vencimiento.", Toast.LENGTH_SHORT).show();
-        }
-        else if(anioVencTarj<=anioAhora){
-            Toast.makeText(this, "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
-        }
-        else if(!(terminosycondiciones.isChecked())){
-            Toast.makeText(this, "Debe aceptar los terminos y condiciones.", Toast.LENGTH_SHORT).show();
-        }
-        else if(switchCargaInicial.isChecked()){
-            int value = seekBar.getProgress();
-            if(value == 0){
-                Toast.makeText(this, "Si realiza un credito inicial debe seleccionar un monto.", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else{
-            Toast.makeText(this, "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
-        }
-    }
-}
-*/

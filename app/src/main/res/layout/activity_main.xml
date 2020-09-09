@@ -176,6 +176,6 @@
         android:hint="@string/registrar"
         android:onClick="Registrar"
         android:enabled="false"
-        tools:ignore="InOrMmUsage" />
+        tools:ignore="InOrMmUsage,OnClick" />
 
 </LinearLayout>
