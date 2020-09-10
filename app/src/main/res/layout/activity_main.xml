@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/nombre"
-        android:inputType="text"
-        android:layout_marginTop="@dimen/margenes_superiores"/>
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/contrasenia1"
@@ -71,7 +70,7 @@
             android:layout_weight="75"
             android:hint="@string/tarjeta"
             android:inputType="number"
-            />
+            android:maxLength="12"/>
         <EditText
             android:id="@+id/codigoCCV"
             android:layout_width="wrap_content"
@@ -79,7 +78,8 @@
             android:layout_weight="25"
             android:hint="@string/ccv"
             android:inputType="number"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:maxLength="3"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -122,14 +122,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/cbu"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:maxLength="22"/>
 
     <EditText
         android:id="@+id/alias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/alias"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:maxLength="20"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -162,7 +164,6 @@
 
     <CheckBox
         android:id="@+id/terminosycondiciones"
-        android:layout_marginTop="@dimen/margenes_superiores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/term_cond" />
@@ -171,7 +172,6 @@
         android:id="@+id/botonregistrarme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margenes_superiores"
         android:background="@color/btnRegistro"
         android:hint="@string/registrar"
         android:onClick="Registrar"

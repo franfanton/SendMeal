@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         terminosycondiciones.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -180,13 +182,24 @@ public class MainActivity extends AppCompatActivity {
                 else if(!(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
                         && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
                 ){
+
                     mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
                     anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
                     if(anioVencTarj<=anioAhora){
                         Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
+                    else if(anioVencTarj == anioAhora){
+                        if (mesVencTarj < (mesAhora + 3)){
+                            Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else if(anioVencTarj > anioAhora){
+                        if ((mesAhora + 3) > 11){
+                            mesAhora=0;
+                            if (mesVencTarj < (mesAhora + 3)){
+                                Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 }
                 else{
