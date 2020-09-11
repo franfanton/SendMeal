@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else if(anioVencTarj > anioAhora) {
+                    else {
                         if ((mesAhora + 3) > 12) {
                             mesAhora = 0;
                             if (mesVencTarj < (mesAhora + 3)) {
