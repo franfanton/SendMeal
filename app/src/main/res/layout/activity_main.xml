@@ -70,7 +70,7 @@
             android:layout_weight="75"
             android:hint="@string/tarjeta"
             android:inputType="number"
-            android:maxLength="12"/>
+            android:maxLength="16"/>
         <EditText
             android:id="@+id/codigoCCV"
             android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:entries="@array/mesVencimiento"/>
+            android:entries="@array/mesVencimiento" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

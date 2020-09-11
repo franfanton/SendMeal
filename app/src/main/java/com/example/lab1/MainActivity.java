@@ -2,6 +2,7 @@ package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +15,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ProgressBar;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.example.lab1.model.CuentaBancaria;
@@ -28,13 +27,14 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
-    private ProgressBar progressBar;
     private SeekBar seekBar;
     private EditText nombre,contrasenia1,contrasenia2,correo,numeroTarjeta,numeroCCV,cbu,alias;
     private RadioButton tarjetaDebito,tarjetaCredito;
     private Spinner mesVencimiento,anioVencimiento;
-    private CheckBox terminosycondiciones;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchCargaInicial;
+    @SuppressLint("SetTextI18n")
+    //se agregaron las annotation para que deje de mostrar warnings
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +53,11 @@ public class MainActivity extends AppCompatActivity {
         alias = (EditText) findViewById(R.id.alias);
         mesVencimiento = (Spinner) findViewById(R.id.mesVencimiento);
         anioVencimiento = (Spinner) findViewById(R.id.anioVencimiento);
-        terminosycondiciones = (CheckBox) findViewById(R.id.terminosycondiciones);
+        CheckBox terminosycondiciones = (CheckBox) findViewById(R.id.terminosycondiciones);
         switchCargaInicial = (Switch) findViewById(R.id.switchCargaInicial);
+        textView = (TextView) findViewById(R.id.textoCargaInicial);
+        seekBar = (SeekBar) findViewById(R.id.seekBarCargaInicial);
+        textView.setText("Credito Inicial: " + seekBar.getProgress() + "/" + seekBar.getMax());
         mesVencimiento.setEnabled(false);
         anioVencimiento.setEnabled(false);
 
@@ -84,11 +87,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        textView = (TextView) findViewById(R.id.textoCargaInicial);
-        seekBar = (SeekBar) findViewById(R.id.seekBarCargaInicial);
-        textView.setText("Credito Inicial: " + seekBar.getProgress() + "/" + seekBar.getMax());
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textView.setText("Credito Inicial: " + progress + "/" + seekBar.getMax());
@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         terminosycondiciones.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -133,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                String emailPattern = getString(R.string.mailCorrecto);
+                //ver ejemplo email@utn.frsf.edu.ar, se cambió el texto de lugar a values/strings.xml
                 Calendar calendar = Calendar.getInstance();
                 int mesAhora = calendar.get(Calendar.MONTH)+1;
                 int anioAhora = calendar.get(Calendar.YEAR);
@@ -147,10 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 else if(contrasenia1.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "El campo contraseña esta vacio.", Toast.LENGTH_SHORT).show();
                 }
-                else if(contrasenia2.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo repetir contraseña esta vacio.", Toast.LENGTH_SHORT).show();
-                }
-                else if(!(contrasenia1.getText().toString().equals(contrasenia2.getText().toString()))){
+                else if((!(contrasenia1.getText().toString().equals(contrasenia2.getText().toString()))) ||
+                        contrasenia2.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
                 }
                 else if(correo.getText().toString().isEmpty()){
@@ -176,16 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else if(switchCargaInicial.isChecked() && value == 0){
-                    Toast.makeText(getApplicationContext(), "Si realiza un credito inicial debe seleccionar un monto.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Su crédito inicial debe ser mayor que $0.", Toast.LENGTH_SHORT).show();
                     }
 
                 else if(!(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
-                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
-                ){
-
+                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))){
                     mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
                     anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
-                    if(anioVencTarj<=anioAhora){
+                    if(anioVencTarj<anioAhora){
                         Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                     }
                     else if(anioVencTarj == anioAhora){
@@ -193,23 +188,22 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else if(anioVencTarj > anioAhora){
-                        if ((mesAhora + 3) > 11){
-                            mesAhora=0;
-                            if (mesVencTarj < (mesAhora + 3)){
+                    else if(anioVencTarj > anioAhora) {
+                        if ((mesAhora + 3) > 12) {
+                            mesAhora = 0;
+                            if (mesVencTarj < (mesAhora + 3)) {
                                 Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                             }
                         }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Registro Exitoso!", Toast.LENGTH_SHORT).show();
+                            boolean esCredito = tarjetaCredito.isChecked();
+                            Date fechaVencimiento = new Date(anioVencTarj - 1900, mesVencTarj, 1);
+                            CuentaBancaria cuentaUsuario = new CuentaBancaria(cbu.getText().toString(), alias.getText().toString());
+                            Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), fechaVencimiento, esCredito);
+                            Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1.getText().toString(), correo.getText().toString(), (double) value, tarjetaUsuario, cuentaUsuario);
+                        }
                     }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Formulario cargado con exito.", Toast.LENGTH_SHORT).show();
-                    boolean esCredito = tarjetaCredito.isChecked();
-                    Date fechaVencimiento = new Date(anioVencTarj-1900, mesVencTarj, 1);
-                    CuentaBancaria cuentaUsuario = new CuentaBancaria(cbu.getText().toString(), alias.getText().toString());
-                    Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), fechaVencimiento, esCredito);
-                    Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1.getText().toString(), correo.getText().toString(), (double) 0, tarjetaUsuario, cuentaUsuario);
-
                 }
             }
         });
