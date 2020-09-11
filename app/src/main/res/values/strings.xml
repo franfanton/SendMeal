@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LAB1</string>
+    <string name="app_name">Send Meal</string>
     <string name="titulo_form">Complete los campos solicitados:</string>
     <string name="nombre">Ingrese su Nombre</string>
     <string name="mail">Ingrese un Correo Electrónico</string>
