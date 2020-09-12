@@ -1,3 +1,51 @@
 <resources>
-    <string name="app_name">LAB1</string>
+    <string name="app_name">Send Meal</string>
+    <string name="titulo_form">Complete los campos solicitados:</string>
+    <string name="nombre">Ingrese su Nombre</string>
+    <string name="mail">Ingrese un Correo Electrónico</string>
+    <string name="passwd">Ingrese una Contraseña</string>
+    <string name="rep_passwd">Ingrese Nuevamente su Contraseña</string>
+    <string name="tipo_tarjeta">Tipo de Tarjeta:</string>
+    <string name="debito">Débito</string>
+    <string name="credito">Crédito</string>
+    <string name="tarjeta">Número de Tarjeta</string>
+    <string name="ccv">CCV</string>
+    <string name="mes">Mes</string>
+    <string name="anio">Año</string>
+    <string name="carga">¿Realizar una carga inicial?</string>
+    <string name="term_cond">Acepto los términos y condiciones</string>
+    <string name="registrar">Registrar</string>
+    <string name="cbu">CBU</string>
+    <string name="alias">Alias</string>
+    <string name="fechaVencimiento">Fecha de Vencimiento</string>
+    <string name="mailCorrecto">[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+</string>
+    <string-array name="mesVencimiento">
+        <item>:: Seleccione ::</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="aniosVencimiento">
+        <item>:: Seleccione ::</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+        <item>2029</item>
+        <item>2030</item>
+    </string-array>
 </resources>
