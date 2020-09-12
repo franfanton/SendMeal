@@ -11,46 +11,37 @@
         android:id="@+id/tvSaludo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Complete los campos solicitados:"
-        android:layout_centerHorizontal="true"
+        android:text="@string/titulo_form"
         android:textSize="20sp"/>
     <EditText
         android:id="@+id/nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingrese su Nombre"
-        android:inputType="text"
-        android:layout_marginTop="3mm"/>
+        android:hint="@string/nombre"
+        android:inputType="text" />
 
-    <EditText
-        android:id="@+id/apellido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese su apellido"
-        android:inputType="text"
-        />
     <EditText
         android:id="@+id/contrasenia1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingrese una contraseña"
+        android:hint="@string/passwd"
         android:inputType="textPassword"/>
     <EditText
         android:id="@+id/contrasenia2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingrese nuevamente la contraseña"
+        android:hint="@string/rep_passwd"
         android:inputType="textPassword"/>
     <EditText
         android:id="@+id/correo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingrese correo electronico"
+        android:hint="@string/mail"
         android:inputType="textEmailAddress"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tipo de tarjeta"/>
+        android:hint="@string/tipo_tarjeta"/>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,13 +51,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Debito"/>
+            android:text="@string/debito"/>
         <RadioButton
             android:id="@+id/botonCredito"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Credito"/>
+            android:text="@string/credito" />
     </RadioGroup>
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,23 +67,26 @@
             android:id="@+id/numeroTarjeta"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:hint="Ingrese tarjeta"
+            android:layout_weight="75"
+            android:hint="@string/tarjeta"
             android:inputType="number"
-            android:paddingRight="130dp"/>
+            android:maxLength="16"/>
         <EditText
             android:id="@+id/codigoCCV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:hint="Ingrese CCV"
+            android:layout_weight="25"
+            android:hint="@string/ccv"
             android:inputType="number"
-            android:paddingRight="60dp"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:maxLength="3"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha de Vencimiento">
+        android:hint="@string/fechaVencimiento">
     </TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,85 +94,87 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Dia: ">
+            android:hint="@string/mes">
         </TextView>
         <Spinner
-            android:id="@+id/diaVencimiento"
+            android:id="@+id/mesVencimiento"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:entries="@array/diasVencimiento"
-            android:paddingRight="80dp"/>
+            android:layout_weight="50"
+            android:entries="@array/mesVencimiento" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Año: ">
+            android:hint="@string/anio">
         </TextView>
+
         <Spinner
             android:id="@+id/anioVencimiento"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:entries="@array/aniosVencimiento"
-            android:paddingRight="80dp"/>
+            android:layout_weight="50"
+            android:entries="@array/aniosVencimiento" />
+
     </LinearLayout>
+
     <EditText
         android:id="@+id/numeroCBU"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="CBU"
-        android:inputType="number"/>
+        android:hint="@string/cbu"
+        android:inputType="number"
+        android:maxLength="22"/>
+
     <EditText
         android:id="@+id/alias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Alias CBU"
-        android:inputType="number"/>
+        android:hint="@string/alias"
+        android:inputType="number"
+        android:maxLength="20"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:hint="¿Desea realizar una carga inicial?"
-            android:paddingRight="150dp"/>
+
         <Switch
             android:id="@+id/switchCargaInicial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/carga"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
     </LinearLayout>
+
     <TextView
         android:id="@+id/textoCargaInicial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:textSize="15sp"
-        android:visibility="gone"/>
+        android:layout_marginBottom="@dimen/margenes_inferior"
+        android:textSize="@dimen/tam_textos"
+        android:visibility="gone" />
+
     <SeekBar
         android:id="@+id/seekBarCargaInicial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:max="1500"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <CheckBox
         android:id="@+id/terminosycondiciones"
-        android:layout_marginTop="4mm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Acepta Términos y Condiciones"/>
+        android:text="@string/term_cond" />
 
     <Button
         android:id="@+id/botonregistrarme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4mm"
-        android:background="#3db8ff"
-        android:hint="Registrarme"
-        android:onClick="Registrar" />
+        android:background="@color/btnRegistro"
+        android:hint="@string/registrar"
+        android:enabled="false"
+        tools:ignore="InOrMmUsage,OnClick" />
+
 </LinearLayout>
