@@ -1,5 +1,7 @@
 <resources>
+    <!-- STRING LAB 01-->
     <string name="app_name">Send Meal</string>
+    <string name="titulo_inicial">Bienvenido a Send Mail</string>
     <string name="titulo_form">Complete los campos solicitados:</string>
     <string name="nombre">Ingrese su Nombre</string>
     <string name="mail">Ingrese un Correo Electrónico</string>
@@ -48,4 +50,6 @@
         <item>2029</item>
         <item>2030</item>
     </string-array>
+
+    <!-- STRING LAB 01-->
 </resources>

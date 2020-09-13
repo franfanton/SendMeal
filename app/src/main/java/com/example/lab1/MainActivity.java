@@ -1,4 +1,4 @@
-git package com.example.lab1;
+package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
