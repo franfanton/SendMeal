@@ -2,6 +2,8 @@ package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -21,14 +24,19 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.lab1.model.AdapterPruebaLista;
 import com.example.lab1.model.CuentaBancaria;
+import com.example.lab1.model.PruebaLista;
 import com.example.lab1.model.Tarjeta;
 import com.example.lab1.model.Usuario;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     private TextView textView;
     private SeekBar seekBar;
     private EditText nombre,contrasenia1,contrasenia2,correo,numeroTarjeta,numeroCCV,cbu,alias;
@@ -43,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final Button boton = findViewById(R.id.botonregistrarme);
 
         nombre = (EditText) findViewById(R.id.nombre);

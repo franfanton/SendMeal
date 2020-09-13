@@ -3,15 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/itemRegistrar"
-        android:icon="@drawable/ic_icon"
-        android:title="Registrar"
-        app:showAsAction="never"/>
+        android:title="Registrar"/>
     <item android:id="@+id/itemCrear"
-        android:icon="@drawable/ic_icon"
-        android:title="Crear Item"
-        app:showAsAction="never"/>
+        android:title="Crear Item"/>
     <item android:id="@+id/itemListar"
-        android:icon="@drawable/ic_icon"
-        android:title="Listado de Items"
-        app:showAsAction="never"/>
+        android:title="Listado de Items"/>
 </menu>
