@@ -1,11 +1,14 @@
 package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mesVencimiento,anioVencimiento;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchCargaInicial;
+
     @SuppressLint("SetTextI18n")
     //se agregaron las annotation para que deje de mostrar warnings
     @Override
@@ -60,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         textView.setText("Credito Inicial: " + seekBar.getProgress() + "/" + seekBar.getMax());
         mesVencimiento.setEnabled(false);
         anioVencimiento.setEnabled(false);
+
+
+
+
+
 
         numeroTarjeta.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,4 +217,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

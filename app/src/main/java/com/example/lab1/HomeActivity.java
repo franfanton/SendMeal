@@ -1,22 +1,25 @@
 package com.example.lab1;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.Toolbar;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuInflater;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivity);
-        Toolbar toolbarprincipal = (Toolbar) findViewById(R.id.toolbarprincipal);
-        setSupportActionBar(toolbarprincipal);
-        
-
+        Toolbar toolbar = findViewById(R.id.toolbarHome);
+        setSupportActionBar(toolbar);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menuinicial, menu);
+        return true;
     }
 
-    private void setSupportActionBar(Toolbar toolbarprincipal) {
-    }
+
 }
