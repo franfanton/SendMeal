@@ -14,11 +14,11 @@ import com.example.lab1.model.Plato;
 public class CrearItem extends AppCompatActivity {
     private TextView nuevoPlato;
     private EditText tituloPlato, descripcionPlato, precioPlato, caloriasPlato;
-    private Double precioDouble = Double.parseDouble(precioPlato.getText().toString());
+    private Double precioDouble;
 
     @Override
-    protected void onCreate(Bundle savedIntanceState) {
-        super.onCreate(savedIntanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.crearitem);
         Button guardar = findViewById(R.id.botonGuardarPlato);
 
@@ -31,20 +31,26 @@ public class CrearItem extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getApplicationContext(), "Plato Guardado!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "hola", Toast.LENGTH_LONG).show();
-                /*if (tituloPlato.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El campo titulo esta vacio.", Toast.LENGTH_SHORT).show();
+                precioDouble = Double.parseDouble(precioPlato.getText().toString());
+
+                if (tituloPlato.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "El campo título esta vacío.", Toast.LENGTH_SHORT).show();
                 } else if (descripcionPlato.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El campo descripcion esta vacio.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "El campo descripción esta vacío.", Toast.LENGTH_SHORT).show();
                 } else if (precioPlato.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El campo precio esta vacio.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "El campo precio esta vacío.", Toast.LENGTH_SHORT).show();
+                } else if (precioDouble <= 0 ){
+                    Toast.makeText(getApplicationContext(), "El precio debe ser mayor a $0.", Toast.LENGTH_SHORT).show();
                 } else if (caloriasPlato.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El campo calorias esta vacio.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "El campo calorías esta vacío.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Plato Guardado!", Toast.LENGTH_SHORT).show();
-                    Plato nuevoPlato = new Plato(tituloPlato.getText().toString(), descripcionPlato.getText().toString(), precioDouble, caloriasPlato.getText().toString());
-                }*/
+                    String titulo = tituloPlato.getText().toString();
+                    String descripcion = descripcionPlato.getText().toString();
+                    String calorias = caloriasPlato.getText().toString();
+
+                    Plato nuevoPlato = new Plato(titulo, descripcion, precioDouble, calorias);
+                }
             }
         });
     }

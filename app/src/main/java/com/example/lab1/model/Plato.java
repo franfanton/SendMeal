@@ -1,11 +1,10 @@
 package com.example.lab1.model;
 
 public class Plato {
-    //preguntar si va un id
     private String titulo;
     private String descripcion;
     private Double precio;
-    private String calorias; //integer
+    private String calorias;
 
     public Plato(String titulo, String descripcion, Double precio, String calorias) {
         this.titulo = titulo;
