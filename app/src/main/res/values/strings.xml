@@ -50,6 +50,17 @@
         <item>2029</item>
         <item>2030</item>
     </string-array>
-
     <!-- STRING LAB 01-->
+
+    <!-- STRING LAB 02-->
+    <string name="tituloNuevoPlato">Nuevo Plato</string>
+    <string name="titulo">Título</string>
+    <string name="descripcion">Descripción</string>
+    <string name="precio">Precio</string>
+    <string name="calorias">Calorías</string>
+    <string name="guardarPlato">Guardar</string>
+    <!-- STRING LAB 02-->
+
 </resources>
+
+
