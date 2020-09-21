@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CrearItem" >
+    tools:context=".CrearItemActivity" >
 
     <TextView
         android:id="@+id/nuevoPlato"
@@ -48,17 +48,18 @@
             android:textColor="@android:color/black" />
         <EditText
             android:id="@+id/precioPlato"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="1"
             android:hint="@string/precio"
             android:inputType="numberDecimal"
             android:maxLength="6"/>
         <EditText
             android:id="@+id/caloriasPlato"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="50"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
             android:hint="@string/calorias"
             android:inputType="number"
             android:maxLength="4"/>

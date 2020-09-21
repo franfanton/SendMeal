@@ -38,7 +38,8 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.itemCrear:
                 Toast.makeText(this, "Selecciono Crear Item", Toast.LENGTH_SHORT).show();
-                //CLASE Y VISTA VALE
+                i = new Intent(HomeActivity.this,CrearItemActivity.class);
+                startActivity(i);
                 break;
 
             case R.id.itemListar:

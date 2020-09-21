@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.lab1.model.Plato;
 
-public class CrearItem extends AppCompatActivity {
+public class CrearItemActivity extends AppCompatActivity {
     private TextView nuevoPlato;
     private EditText tituloPlato, descripcionPlato, precioPlato, caloriasPlato;
     private Double precioDouble;
