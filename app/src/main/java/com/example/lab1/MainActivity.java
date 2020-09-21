@@ -1,15 +1,21 @@
 package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -18,14 +24,19 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.lab1.model.AdapterPruebaLista;
 import com.example.lab1.model.CuentaBancaria;
+import com.example.lab1.model.PruebaLista;
 import com.example.lab1.model.Tarjeta;
 import com.example.lab1.model.Usuario;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     private TextView textView;
     private SeekBar seekBar;
     private EditText nombre,contrasenia1,contrasenia2,correo,numeroTarjeta,numeroCCV,cbu,alias;
@@ -33,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mesVencimiento,anioVencimiento;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchCargaInicial;
+
     @SuppressLint("SetTextI18n")
     //se agregaron las annotation para que deje de mostrar warnings
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final Button boton = findViewById(R.id.botonregistrarme);
 
         nombre = (EditText) findViewById(R.id.nombre);
@@ -60,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         textView.setText("Credito Inicial: " + seekBar.getProgress() + "/" + seekBar.getMax());
         mesVencimiento.setEnabled(false);
         anioVencimiento.setEnabled(false);
+
+
+
+
+
 
         numeroTarjeta.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 String emailPattern = getString(R.string.mailCorrecto);
                 //ver ejemplo email@utn.frsf.edu.ar, se cambió el texto de lugar a values/strings.xml
                 Calendar calendar = Calendar.getInstance();
+                int mesEnero = 1;
                 int mesAhora = calendar.get(Calendar.MONTH)+1;
                 int anioAhora = calendar.get(Calendar.YEAR);
                 int mesVencTarj = 0;
@@ -176,36 +195,39 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Su crédito inicial debe ser mayor que $0.", Toast.LENGTH_SHORT).show();
                     }
 
-                else if(!(mesVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))
-                        && !(anioVencimiento.getSelectedItem().toString().equals(":: Seleccione ::"))){
+                else {
                     mesVencTarj = Integer.parseInt(mesVencimiento.getSelectedItem().toString());
                     anioVencTarj = Integer.parseInt(anioVencimiento.getSelectedItem().toString());
                     if(anioVencTarj<anioAhora){
                         Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                     }
-                    else if(anioVencTarj == anioAhora){
-                        if (mesVencTarj < (mesAhora + 3)){
-                            Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
-                        }
+                    else if(anioVencTarj == anioAhora && mesVencTarj <= (mesAhora+3)){
+                        Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(anioVencTarj == (anioAhora + 1) && (mesAhora + 3) > 12 && mesVencTarj < (mesEnero + 3)) {
+                        Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        if ((mesAhora + 3) > 12) {
-                            mesAhora = 0;
-                            if (mesVencTarj < (mesAhora + 3)) {
-                                Toast.makeText(getApplicationContext(), "El vencimiento debe ser superior a los próximos 3 meses", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else {
                             Toast.makeText(getApplicationContext(), "Registro Exitoso!", Toast.LENGTH_SHORT).show();
                             boolean esCredito = tarjetaCredito.isChecked();
-                            Date fechaVencimiento = new Date(anioVencTarj - 1900, mesVencTarj, 1);
-                            CuentaBancaria cuentaUsuario = new CuentaBancaria(cbu.getText().toString(), alias.getText().toString());
-                            Tarjeta tarjetaUsuario = new Tarjeta(numeroTarjeta.getText().toString(), numeroCCV.getText().toString(), fechaVencimiento, esCredito);
-                            Usuario nuevoUsuario = new Usuario(1, nombre.getText().toString(), contrasenia1.getText().toString(), correo.getText().toString(), (double) value, tarjetaUsuario, cuentaUsuario);
+                            String cbuUsuario = cbu.getText().toString();
+                            String aliasUsuario = alias.getText().toString();
+                            String tarjUsuario = numeroTarjeta.getText().toString();
+                            String ccvUsuario = numeroCCV.getText().toString();
+                            String nombreUsuario = nombre.getText().toString();
+                            String contraseniaUsuario = contrasenia1.getText().toString();
+                            String correoUsuario = correo.getText().toString();
+
+                            Date fechaVencimiento = new Date(anioVencTarj - 1900, mesVencTarj - 1, 1);
+                            CuentaBancaria cuentaUsuario = new CuentaBancaria(cbuUsuario, aliasUsuario);
+                            Tarjeta tarjetaUsuario = new Tarjeta(tarjUsuario, ccvUsuario, fechaVencimiento, esCredito);
+                            Usuario nuevoUsuario = new Usuario(nombreUsuario, contraseniaUsuario, correoUsuario, (double) value, tarjetaUsuario, cuentaUsuario);
+                            Toast.makeText(getApplicationContext(), "Nro de Cuenta: "+cuentaUsuario.getCbu()+" y alias: "+cuentaUsuario.getAlias(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Tarjeta de Credito? "+esCredito+" Nro de tarjeta: "+tarjetaUsuario.getNumero()+" Nro de CCV: "+tarjetaUsuario.getCcv()+" fecha de vencimiento: "+fechaVencimiento, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "El id del usuario es: "+nuevoUsuario.getId()+" se llama: "+nuevoUsuario.getNombre()+" su clave es: "+nuevoUsuario.getClave()+" su correo: "+nuevoUsuario.getEmail()+" el valor de carga inicial es de: $"+value, Toast.LENGTH_LONG).show();
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
-}
