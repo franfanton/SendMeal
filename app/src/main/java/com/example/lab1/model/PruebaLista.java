@@ -4,11 +4,13 @@ public class PruebaLista {
     private int  imagen;
     private String titulo;
     private String precio;
+    private String calorias;
 
-    public PruebaLista(int  imagen, String titulo, String precio) {
+    public PruebaLista(int  imagen, String titulo, String precio, String calorias) {
         this.imagen = imagen;
         this.titulo = titulo;
         this.precio = precio;
+        this.calorias = calorias;
     }
 
     public int getImagen() {
@@ -33,5 +35,13 @@ public class PruebaLista {
 
     public void setPrecio(String precio) {
         this.precio = precio;
+    }
+
+    public String getCalorias() {
+        return calorias;
+    }
+
+    public void setCalorias(String calorias) {
+        this.calorias = calorias;
     }
 }
