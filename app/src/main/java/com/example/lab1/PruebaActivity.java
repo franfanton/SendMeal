@@ -31,9 +31,14 @@ public class PruebaActivity extends AppCompatActivity{
         // PRUEBA
         rvPruebas = findViewById(R.id.rvPruebas);
         listaPruebas = new ArrayList<PruebaLista>();
-        listaPruebas.add(new PruebaLista(R.drawable.vale,"Pizza","120"));
-        listaPruebas.add(new PruebaLista(R.drawable.vale,"Pasta","135"));
-        listaPruebas.add(new PruebaLista(R.drawable.vale,"Canelones","270"));
+        listaPruebas.add(new PruebaLista(R.drawable.pizza,"Pizza","350","750"));
+        listaPruebas.add(new PruebaLista(R.drawable.tallarines,"Tallarines","300","400"));
+        listaPruebas.add(new PruebaLista(R.drawable.pollo,"Pollo","450","450"));
+        listaPruebas.add(new PruebaLista(R.drawable.burger,"Hamburguesa","480","1500"));
+        listaPruebas.add(new PruebaLista(R.drawable.milaconpure,"Milanesa con Pure","275","650"));
+        listaPruebas.add(new PruebaLista(R.drawable.papasfritascheddard,"Papas fritas con cheddard y panceta","230","740"));
+        listaPruebas.add(new PruebaLista(R.drawable.sushi,"Sushi","1300","350"));
+        listaPruebas.add(new PruebaLista(R.drawable.tacos,"Tacos","175","684"));
 
         rvPruebas.setHasFixedSize(true);
         lManager = new LinearLayoutManager(this);
