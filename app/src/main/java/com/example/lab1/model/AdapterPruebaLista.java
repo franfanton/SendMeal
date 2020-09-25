@@ -31,6 +31,7 @@ public class AdapterPruebaLista extends RecyclerView.Adapter<AdapterPruebaLista.
         pruebaViewHolder.ivImagen.setImageResource(listaPrueba.get(i).getImagen());
         pruebaViewHolder.tvTitulo.setText(listaPrueba.get(i).getTitulo());
         pruebaViewHolder.tvPrecio.setText(listaPrueba.get(i).getPrecio());
+        pruebaViewHolder.tvCalorias.setText(listaPrueba.get(i).getCalorias());
     }
 
     @Override
@@ -40,12 +41,13 @@ public class AdapterPruebaLista extends RecyclerView.Adapter<AdapterPruebaLista.
 
     public class PruebaViewHolder extends RecyclerView.ViewHolder{
         ImageView ivImagen;
-        TextView tvTitulo,tvPrecio;
+        TextView tvTitulo,tvPrecio,tvCalorias;
         public PruebaViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImagen = itemView.findViewById(R.id.imagen);
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
+            tvCalorias = itemView.findViewById(R.id.tvCalorias);
         }
     }
 }
