@@ -2,6 +2,7 @@ package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class CrearItemActivity extends AppCompatActivity {
     private TextView nuevoPlato;
     private EditText tituloPlato, descripcionPlato, precioPlato, caloriasPlato;
     private Double precioDouble;
+    public static int CODIGO_ACTIVIDAD = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class CrearItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Intent i = new Intent(CrearItemActivity.this, PruebaActivity.this);
                 precioDouble = Double.parseDouble(precioPlato.getText().toString());
 
                 if (tituloPlato.getText().toString().isEmpty()) {
@@ -50,6 +53,15 @@ public class CrearItemActivity extends AppCompatActivity {
                     String calorias = caloriasPlato.getText().toString();
 
                     Plato nuevoPlato = new Plato(titulo, descripcion, precioDouble, calorias);
+                    // INTENT
+                    Intent i = new Intent(CrearItemActivity.this,PruebaActivity.class);
+                    i.putExtra("titulo",titulo);
+                    i.putExtra("descripcion",descripcion);
+                    i.putExtra("precio",precioDouble);
+                    i.putExtra("calorias",calorias);
+                    startActivity(i);
+                    //startActivityForResult(i, CODIGO_ACTIVIDAD);
+
                 }
             }
         });

@@ -1,7 +1,9 @@
 package com.example.lab1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +26,7 @@ public class PruebaActivity extends AppCompatActivity{
 
     // FIN PRUEBA
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prueba_card_view);
 
@@ -46,5 +48,19 @@ public class PruebaActivity extends AppCompatActivity{
         adapter = new AdapterPruebaLista(listaPruebas);
         rvPruebas.setAdapter(adapter);
         // FIN PRUEBA
+
+
+        recibirDatosPlato();
+
+    }
+    public void recibirDatosPlato(){
+
+            Bundle extras = getIntent().getExtras();
+            String datoTitulo = extras.getString("titulo");
+            String datoDescripcion = extras.getString("descripcion");
+            Double datoPrecio = extras.getDouble("precio");
+            String datoCalorias = extras.getString("calorias");
+            listaPruebas.add(new PruebaLista(R.drawable.plato,datoTitulo,datoPrecio.toString(),datoCalorias));
+
     }
 }
