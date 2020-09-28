@@ -19,7 +19,7 @@
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:title="Send Mail">
+        app:title="Send Meal">
 
 
 

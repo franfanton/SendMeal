@@ -55,12 +55,18 @@ public class PruebaActivity extends AppCompatActivity{
     }
     public void recibirDatosPlato(){
 
-            Bundle extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+
+
             String datoTitulo = extras.getString("titulo");
             String datoDescripcion = extras.getString("descripcion");
             Double datoPrecio = extras.getDouble("precio");
             String datoCalorias = extras.getString("calorias");
             listaPruebas.add(new PruebaLista(R.drawable.plato,datoTitulo,datoPrecio.toString(),datoCalorias));
+
+        }
+
 
     }
 }
