@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +6,10 @@
     android:orientation="vertical"
     tools:context=".CrearItemActivity" >
     <include
-        android:id="@+id/toolbar"
         layout="@layout/homeactivity"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/nuevoPlato"
         android:layout_width="match_parent"
