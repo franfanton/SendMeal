@@ -20,9 +20,6 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:title="Send Meal">
-
-
-
     </androidx.appcompat.widget.Toolbar>
 
 </RelativeLayout>
