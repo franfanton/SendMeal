@@ -6,15 +6,12 @@
         layout="@layout/homeactivity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
-    <include
-        layout="@menu/menuinicial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 
     <ImageView
         android:id="@+id/imagenEmpresa"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="410dp"
+        android:layout_height="410dp"
         android:scaleType="centerCrop"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
