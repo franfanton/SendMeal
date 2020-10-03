@@ -1,8 +1,13 @@
 package com.example.lab1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,15 +16,18 @@ import android.widget.Toast;
 
 import com.example.lab1.model.Plato;
 
-public class CrearItemActivity extends AppCompatActivity {
+public class AltaItemActivity extends AppCompatActivity {
     private TextView nuevoPlato;
     private EditText tituloPlato, descripcionPlato, precioPlato, caloriasPlato;
     private Double precioDouble;
+    public static int CODIGO_ACTIVIDAD = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crearitem);
+        setContentView(R.layout.alta_item);
+        Toolbar toolbar = findViewById(R.id.toolbarHome);
+        setSupportActionBar(toolbar);
         Button guardar = findViewById(R.id.botonGuardarPlato);
 
         tituloPlato = (EditText) findViewById(R.id.tituloPlato);
@@ -31,6 +39,7 @@ public class CrearItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Intent i = new Intent(CrearItemActivity.this, PruebaActivity.this);
                 precioDouble = Double.parseDouble(precioPlato.getText().toString());
 
                 if (tituloPlato.getText().toString().isEmpty()) {
@@ -50,8 +59,49 @@ public class CrearItemActivity extends AppCompatActivity {
                     String calorias = caloriasPlato.getText().toString();
 
                     Plato nuevoPlato = new Plato(titulo, descripcion, precioDouble, calorias);
+                    // INTENT
+                    Intent i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
+                    i.putExtra("titulo",titulo);
+                    i.putExtra("descripcion",descripcion);
+                    i.putExtra("precio",precioDouble);
+                    i.putExtra("calorias",calorias);
+                    startActivity(i);
+                    //startActivityForResult(i, CODIGO_ACTIVIDAD);
+
                 }
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menuinicial, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
+        switch(item.getItemId()){
+            case R.id.itemRegistrar:
+                Toast.makeText(this, "Selecciono Registrarse", Toast.LENGTH_SHORT).show();
+                i = new Intent(AltaItemActivity.this, AltaUsuarioActivity.class);
+                startActivity(i);
+                break;
+
+            case R.id.itemCrear:
+                Toast.makeText(this, "Selecciono Crear Item", Toast.LENGTH_SHORT).show();
+                i = new Intent(AltaItemActivity.this, AltaItemActivity.class);
+                startActivity(i);
+                break;
+
+            case R.id.itemListar:
+                Toast.makeText(this, "Selecciono ver Lista de Items", Toast.LENGTH_SHORT).show();
+                i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
+                startActivity(i);
+                break;
+
+        }
+        return true;
     }
 }

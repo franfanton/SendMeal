@@ -32,19 +32,19 @@ public class HomeActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.itemRegistrar:
                 Toast.makeText(this, "Selecciono Registrarse", Toast.LENGTH_SHORT).show();
-                i = new Intent(HomeActivity.this,MainActivity.class);
+                i = new Intent(HomeActivity.this, AltaUsuarioActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.itemCrear:
                 Toast.makeText(this, "Selecciono Crear Item", Toast.LENGTH_SHORT).show();
-                i = new Intent(HomeActivity.this,CrearItemActivity.class);
+                i = new Intent(HomeActivity.this, AltaItemActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.itemListar:
                 Toast.makeText(this, "Selecciono ver Lista de Items", Toast.LENGTH_SHORT).show();
-                i = new Intent(HomeActivity.this,PruebaActivity.class);
+                i = new Intent(HomeActivity.this, ListaPlatosActivity.class);
                 startActivity(i);
                 break;
 
