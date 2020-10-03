@@ -13,16 +13,16 @@ import com.example.lab1.R;
 
 import java.util.List;
 
-public class AdapterPruebaLista extends RecyclerView.Adapter<AdapterPruebaLista.PruebaViewHolder> {
-    private List<PruebaLista> listaPrueba;
+public class AdapterListaPlatos extends RecyclerView.Adapter<AdapterListaPlatos.PruebaViewHolder> {
+    private List<ListaPlatos> listaPrueba;
 
-    public AdapterPruebaLista(List<PruebaLista> listaPrueba){
+    public AdapterListaPlatos(List<ListaPlatos> listaPrueba){
         this.listaPrueba = listaPrueba;
     }
     @NonNull
     @Override
-    public AdapterPruebaLista.PruebaViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_card_view, viewGroup,false);
+    public AdapterListaPlatos.PruebaViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lista_card_view2, viewGroup,false);
         return new PruebaViewHolder(v);
     }
 
@@ -32,6 +32,7 @@ public class AdapterPruebaLista extends RecyclerView.Adapter<AdapterPruebaLista.
         pruebaViewHolder.tvTitulo.setText(listaPrueba.get(i).getTitulo());
         pruebaViewHolder.tvPrecio.setText(listaPrueba.get(i).getPrecio());
         pruebaViewHolder.tvCalorias.setText(listaPrueba.get(i).getCalorias());
+        pruebaViewHolder.tvDescripcion.setText(listaPrueba.get(i).getDescripcion());
     }
 
     @Override
@@ -41,13 +42,14 @@ public class AdapterPruebaLista extends RecyclerView.Adapter<AdapterPruebaLista.
 
     public class PruebaViewHolder extends RecyclerView.ViewHolder{
         ImageView ivImagen;
-        TextView tvTitulo,tvPrecio,tvCalorias;
+        TextView tvTitulo,tvPrecio,tvCalorias,tvDescripcion;
         public PruebaViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImagen = itemView.findViewById(R.id.imagen);
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvCalorias = itemView.findViewById(R.id.tvCalorias);
+            tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
         }
     }
 }
