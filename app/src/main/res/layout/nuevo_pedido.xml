@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PedidoActivity">
+    <include
+        layout="@layout/homeactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/correo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/mail"
+        android:inputType="textEmailAddress"
+        android:autofillHints="" />
+
+
+    <EditText
+        android:id="@+id/direccionEnvio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/direccionUsuario"
+        android:inputType="text"
+        android:layout_marginBottom="@dimen/margenes_inferior"
+        android:autofillHints="" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/tipo_pedido"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/envio"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/envio"
+            android:layout_marginBottom="@dimen/margenes_inferior"/>
+        <RadioButton
+            android:id="@+id/takeAway"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/takeAway"
+            android:layout_marginBottom="@dimen/margenes_inferior"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/botonAgregarPlato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btnGuardarPlato"
+        android:hint="@string/agregarPlato"
+        android:enabled="true"
+        android:layout_marginBottom="@dimen/margenes_inferior"
+        />
+    <Button
+        android:id="@+id/botonRealizarPedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btnGuardarPlato"
+        android:hint="@string/realizarPedido"
+        android:enabled="true"/>
+
+</LinearLayout>

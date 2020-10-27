@@ -59,6 +59,15 @@
     <string name="precio">Precio</string>
     <string name="calorias">Calorías</string>
     <string name="guardarPlato">Guardar</string>
+    <string name="crear_item">Crear Item</string>
+    <string name="listado_de_items">Listado de Items</string>
+    <string name="nuevo_pedido">Nuevo Pedido</string>
+    <string name="direccionUsuario">Dirección de Envío</string>
+    <string name="tipo_pedido">Tipo de Pedido</string>
+    <string name="envio">Envío</string>
+    <string name="takeAway">Take Away</string>
+    <string name="realizarPedido">Pedir</string>
+    <string name="agregarPlato">+ Agregar Plato +</string>
     <!-- STRING LAB 02-->
 
 </resources>

@@ -251,6 +251,11 @@ public class AltaUsuarioActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
 
+            case R.id.itemNuevoPedido:
+                Toast.makeText(this, "Selecciono Realizar un Nuevo Pedido", Toast.LENGTH_SHORT).show();
+                i = new Intent(AltaUsuarioActivity.this, PedidoActivity.class);
+                startActivity(i);
+                break;
         }
         return true;
     }
