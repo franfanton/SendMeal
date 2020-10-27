@@ -20,7 +20,7 @@
     <string name="cbu">CBU</string>
     <string name="alias">Alias</string>
     <string name="fechaVencimiento">Fecha de Vencimiento</string>
-    <string name="mailCorrecto">[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+</string>
+    <string name="mailCorrecto">[a–zA–Z0-9._-]+@[a-z]+\\.[a-z]+</string>
     <string-array name="mesVencimiento">
         <item>:: Seleccione ::</item>
         <item>1</item>
