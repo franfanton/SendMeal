@@ -95,6 +95,12 @@ public class ListaPlatosActivity extends AppCompatActivity{
                 i = new Intent(ListaPlatosActivity.this, ListaPlatosActivity.class);
                 startActivity(i);
                 break;
+
+            case R.id.altaPedido:
+                Toast.makeText(this, "Selecciono Realizar Pedido", Toast.LENGTH_SHORT).show();
+                i = new Intent(ListaPlatosActivity.this, PedidoActivity.class);
+                startActivity(i);
+                break;
         }
         return true;
     }
