@@ -69,4 +69,18 @@
         android:hint="@string/realizarPedido"
         android:enabled="true"/>
 
+    <ProgressBar
+        android:id="@+id/cargaPedido"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_pedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pedido_no_realizado"
+        android:visibility="visible" />
+
 </LinearLayout>

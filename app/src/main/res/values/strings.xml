@@ -68,6 +68,7 @@
     <string name="takeAway">Take Away</string>
     <string name="realizarPedido">Pedir</string>
     <string name="agregarPlato">+ Agregar Plato +</string>
+    <string name="pedido_no_realizado">Aún no se realizó su pedido</string>
     <!-- STRING LAB 02-->
 
 </resources>
