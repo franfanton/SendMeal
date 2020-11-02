@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,15 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lab1.model.MyNotificationPublisher;
 import com.example.lab1.model.Pedido;
-import com.example.lab1.model.Plato;
+
+import java.util.ArrayList;
 
 public class PedidoActivity extends AppCompatActivity {
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
+  //  BotonAsyncTask botonAsyncTask;
     public static int CODIGO_ACTIVIDAD = 0;
 
     @Override
@@ -29,23 +32,38 @@ public class PedidoActivity extends AppCompatActivity {
         setContentView(R.layout.alta_pedido);
         Toolbar toolbar = findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
-        Button guardar = findViewById(R.id.botonGuardarPlato);
+
+        final Button botonAgregarPlato = findViewById(R.id.listadoPlatos);
+        final Button botonRealizarPedido = findViewById(R.id.botonGuardarPlato);
 
         correoPedidoNuevo = (EditText) findViewById(R.id.correoPedidoNuevo);
         direccionPedidoNuevo = (EditText) findViewById(R.id.direccionPedidoNuevo);
         botonEnvioPedido = (RadioButton) findViewById(R.id.botonEnvioPedido);
         botonTakeawayPedido = (RadioButton) findViewById(R.id.botonTakeawayPedido);
+  //      botonAsyncTask = new BotonAsyncTask();
 
-        guardar.setOnClickListener(new View.OnClickListener() {
+        botonAgregarPlato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i;
+                i = new Intent(PedidoActivity.this, ListaPlatosActivity.class);
+                startActivityForResult(i,0);
+              //  startActivity(i);
+            }
+        });
+
+        botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (correoPedidoNuevo.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo de correo electronico esta vacío.", Toast.LENGTH_SHORT).show();
                 }else if (direccionPedidoNuevo.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El campo direccion esta vacío.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "El campo direccion esta vacío.", Toast.LENGTH_SHORT).show();
                 }else if(!(botonEnvioPedido.isChecked() || botonTakeawayPedido.isChecked())){
                         Toast.makeText(getApplicationContext(), "Seleccione el tipo de envio.", Toast.LENGTH_SHORT).show();
                 }else {
+
+
                     Toast.makeText(getApplicationContext(), "Pedido Realizado!", Toast.LENGTH_SHORT).show();
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
@@ -65,6 +83,34 @@ public class PedidoActivity extends AppCompatActivity {
         });
     }
 
+    class Tarea1 extends AsyncTask<String, Void, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+    }
+
+    /*class BotonAsyncTask extends AsyncTask<String, String>{
+
+        private ArrayList<String> alarmManager;
+
+        protected String doInBackground(String... params) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "Pedido Realizado";
+        }
+
+        protected void onPostExecute(String result) {
+
+            Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+            // ...
+            alarmManager.set(Integer.parseInt("Hola"), "Chau");
+        }
+    }
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
