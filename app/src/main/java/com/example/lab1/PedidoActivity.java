@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -31,7 +33,9 @@ public class PedidoActivity extends AppCompatActivity {
     // FIN NOTIFICACION
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
-  //  BotonAsyncTask botonAsyncTask;
+    // PARTE LAB 4 - PUNTO 3
+    private ProgressBar progressBar1;
+    //
     public static int CODIGO_ACTIVIDAD = 0;
 
     @Override
@@ -49,6 +53,7 @@ public class PedidoActivity extends AppCompatActivity {
         botonEnvioPedido = (RadioButton) findViewById(R.id.botonEnvioPedido);
         botonTakeawayPedido = (RadioButton) findViewById(R.id.botonTakeawayPedido);
   //      botonAsyncTask = new BotonAsyncTask();
+        progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 
         botonAgregarPlato.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +68,7 @@ public class PedidoActivity extends AppCompatActivity {
         botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (correoPedidoNuevo.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo de correo electronico esta vacío.", Toast.LENGTH_SHORT).show();
                 }else if (direccionPedidoNuevo.getText().toString().isEmpty()) {
@@ -70,9 +76,6 @@ public class PedidoActivity extends AppCompatActivity {
                 }else if(!(botonEnvioPedido.isChecked() || botonTakeawayPedido.isChecked())){
                         Toast.makeText(getApplicationContext(), "Seleccione el tipo de envio.", Toast.LENGTH_SHORT).show();
                 }else {
-
-
-                    Toast.makeText(getApplicationContext(), "Pedido Realizado!", Toast.LENGTH_SHORT).show();
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio = botonEnvioPedido.getText().toString();
@@ -85,46 +88,42 @@ public class PedidoActivity extends AppCompatActivity {
                     //i.putExtra("tipoEnvio",tipoEnvio);
                     //startActivity(i);
                     //startActivityForResult(i, CODIGO_ACTIVIDAD);
-
+                    new Task().execute();
                     // ALTA DE NOTIFICACION
+                    int delay = 8;
                     String tittle = "Send Mail";
                     String content = "Pedido cargado con exito!";
-                    int delay = 5;
                     scheduleNotification(getNotification(content, tittle), delay);
-
                 }
             }
         });
     }
 
-    class Tarea1 extends AsyncTask<String, Void, String>{
+    class Task extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute() {
+            progressBar1.setVisibility(View.VISIBLE);
+            botonEnvioPedido.setEnabled(false);
+        }
+
         @Override
         protected String doInBackground(String... strings) {
-            return null;
-        }
-    }
-
-    /*class BotonAsyncTask extends AsyncTask<String, String>{
-
-        private ArrayList<String> alarmManager;
-
-        protected String doInBackground(String... params) {
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException e) {
+            }catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return "Pedido Realizado";
+            return "salida";
         }
 
-        protected void onPostExecute(String result) {
-
-            Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
-            // ...
-            alarmManager.set(Integer.parseInt("Hola"), "Chau");
+        @Override
+        protected void onPostExecute(String s) {
+            progressBar1.setVisibility(View.INVISIBLE);
+            botonEnvioPedido.setEnabled(true);
         }
+
     }
-*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
