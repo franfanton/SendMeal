@@ -121,18 +121,16 @@
                 android:id="@+id/etUnidades"
                 android:inputType="number"
                 android:visibility="invisible"/>
-            <Button
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:id="@+id/botonAgregarPlato"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:drawableLeft="@drawable/ic_agregar"
-                app:backgroundTint="#ef9a9a"
-                android:hint="Agregar"
-                android:enabled="true"
-
+            <TextView
+                android:id="@+id/tvAgregarPlato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:background="#00C1FF"
+                android:text="@string/agregar"
+                android:enabled="false"
+                android:layout_marginStart="12dp"
+                card_view:drawableLeftCompat="@drawable/ic_agregar"
                 android:visibility="invisible"/>
         </LinearLayout>
     </RelativeLayout>

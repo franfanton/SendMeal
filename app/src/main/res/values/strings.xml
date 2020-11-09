@@ -69,11 +69,12 @@
     <string name="envioNuevoPedido">Envio</string>
     <string name="takeawayNuevoPedido">Take Away</string>
     <string name="listadoPlatosNuevoPedido">Ver Platos</string>
-    <string name="tituloListadoNuevoPedido">Listado del pedido:</string>
+    <string name="tituloListadoNuevoPedido">Plato a pedir:</string>
     <string name="totalNuevoPedido">Total del pedido: $</string>
 
     <string name="guardarNuevoPedido">Realizar Pedido</string>
     <string name="unidades">Unidades:</string>
+    <string name="agregar">+ Agregar +</string>
     <!-- FIN STRING LAB 03-->
 </resources>
 

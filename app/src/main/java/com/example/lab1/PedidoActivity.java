@@ -20,10 +20,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.lab1.model.Pedido;
+
+import java.util.Objects;
 
 public class PedidoActivity extends AppCompatActivity {
     // NOTIFICACION
@@ -32,6 +35,7 @@ public class PedidoActivity extends AppCompatActivity {
     // FIN NOTIFICACION
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
+    private TextView nombrePlato, totalNuevoPedido;
   //  BotonAsyncTask botonAsyncTask;
     private final int CODIGO_ACTIVIDAD = 1;
 
@@ -49,6 +53,8 @@ public class PedidoActivity extends AppCompatActivity {
         direccionPedidoNuevo = (EditText) findViewById(R.id.direccionPedidoNuevo);
         botonEnvioPedido = (RadioButton) findViewById(R.id.botonEnvioPedido);
         botonTakeawayPedido = (RadioButton) findViewById(R.id.botonTakeawayPedido);
+        nombrePlato = (TextView) findViewById(R.id.nombrePlato);
+        totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
   //      botonAsyncTask = new BotonAsyncTask();
 
         botonAgregarPlato.setOnClickListener(new View.OnClickListener() {
@@ -62,30 +68,27 @@ public class PedidoActivity extends AppCompatActivity {
         });
 
         botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
+            String emailPattern = getString(R.string.mailCorrecto);
             @Override
             public void onClick(View view) {
                 if (correoPedidoNuevo.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo de correo electronico esta vacío.", Toast.LENGTH_SHORT).show();
+                }else if(!(correoPedidoNuevo.getText().toString().trim().matches(emailPattern))) {
+                    Toast.makeText(getApplicationContext(),"Ingrese un correo valido",Toast.LENGTH_SHORT).show();
                 }else if (direccionPedidoNuevo.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "El campo direccion esta vacío.", Toast.LENGTH_SHORT).show();
                 }else if(!(botonEnvioPedido.isChecked() || botonTakeawayPedido.isChecked())){
                         Toast.makeText(getApplicationContext(), "Seleccione el tipo de envio.", Toast.LENGTH_SHORT).show();
-                }else {
-
-
+                }else if(nombrePlato.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Debe seleccionar un plato del menú.", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     Toast.makeText(getApplicationContext(), "Pedido Realizado!", Toast.LENGTH_SHORT).show();
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio = botonEnvioPedido.getText().toString();
 
                     Pedido nuevoPedido = new Pedido(correo, direccion, tipoEnvio);
-                    // INTENT
-                    //Intent i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
-                    //i.putExtra("correo",correo);
-                    //i.putExtra("direccion",direccion);
-                    //i.putExtra("tipoEnvio",tipoEnvio);
-                    //startActivity(i);
-                    //startActivityForResult(i, CODIGO_ACTIVIDAD);
 
                     // ALTA DE NOTIFICACION
                     String tittle = "Send Mail";
@@ -102,9 +105,15 @@ public class PedidoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == CODIGO_ACTIVIDAD) {
             assert data != null;
-            if (data.hasExtra("retorno")) {
-                String platodeComida = data.getStringExtra("retorno");
-                Toast.makeText(getApplicationContext(), "prueba existosa, el plato es: "+ platodeComida, Toast.LENGTH_SHORT).show();
+            if (data.hasExtra("titulo")) {
+                String tituloPlato = "- "+data.getStringExtra("titulo")+" x"+data.getStringExtra("unidades");
+                String precioPlato = data.getStringExtra("precio");
+                int unidad, costo, total;
+                unidad = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("unidades")));
+                costo = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("precio")));
+                total = unidad*costo;
+                nombrePlato.setText(tituloPlato);
+                totalNuevoPedido.setText(total+"");
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
