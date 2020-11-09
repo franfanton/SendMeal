@@ -73,6 +73,7 @@
     <string name="totalNuevoPedido">Total del pedido: $</string>
 
     <string name="guardarNuevoPedido">Realizar Pedido</string>
+    <string name="unidades">Unidades:</string>
     <!-- FIN STRING LAB 03-->
 </resources>
 

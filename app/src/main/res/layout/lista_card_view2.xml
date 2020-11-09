@@ -106,28 +106,34 @@
             android:layout_marginTop="10dp"
             android:visibility="visible">
             <TextView
+                android:id="@+id/tvUnidades"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:text="Unidades: "
-                android:textColor="@android:color/black" />
+                android:layout_marginStart="12dp"
+                android:text="@string/unidades"
+                android:textColor="@android:color/black"
+                android:visibility="invisible"/>
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text=""
-                android:id="@+id/tvUnidades"
-                android:inputType="number"/>
+                android:id="@+id/etUnidades"
+                android:inputType="number"
+                android:visibility="invisible"/>
             <Button
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:id="@+id/botonAgregarPlato"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/ic_agregar"
                 app:backgroundTint="#ef9a9a"
                 android:hint="Agregar"
                 android:enabled="true"
-                android:layout_marginLeft="10dp"/>
+
+                android:visibility="invisible"/>
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

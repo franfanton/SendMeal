@@ -1,5 +1,6 @@
 package com.example.lab1;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
@@ -32,7 +33,7 @@ public class PedidoActivity extends AppCompatActivity {
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
   //  BotonAsyncTask botonAsyncTask;
-    public static int CODIGO_ACTIVIDAD = 0;
+    private final int CODIGO_ACTIVIDAD = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class PedidoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i;
                 i = new Intent(PedidoActivity.this, ListaPlatosActivity.class);
-                startActivityForResult(i,0);
-              //  startActivity(i);
+                i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
+                startActivityForResult(i,CODIGO_ACTIVIDAD);
             }
         });
 
@@ -95,6 +96,18 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && requestCode == CODIGO_ACTIVIDAD) {
+            assert data != null;
+            if (data.hasExtra("retorno")) {
+                String platodeComida = data.getStringExtra("retorno");
+                Toast.makeText(getApplicationContext(), "prueba existosa, el plato es: "+ platodeComida, Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class Tarea1 extends AsyncTask<String, Void, String>{

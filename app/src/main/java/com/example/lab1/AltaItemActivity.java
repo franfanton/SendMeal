@@ -30,10 +30,10 @@ public class AltaItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Button guardar = findViewById(R.id.botonGuardarPlato);
 
-        tituloPlato = (EditText) findViewById(R.id.tituloPlato);
-        descripcionPlato = (EditText) findViewById(R.id.descripcionPlato);
-        precioPlato = (EditText) findViewById(R.id.precioPlato);
-        caloriasPlato = (EditText) findViewById(R.id.caloriasPlato);
+        tituloPlato = findViewById(R.id.tituloPlato);
+        descripcionPlato = findViewById(R.id.descripcionPlato);
+        precioPlato = findViewById(R.id.precioPlato);
+        caloriasPlato = findViewById(R.id.caloriasPlato);
 
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +65,7 @@ public class AltaItemActivity extends AppCompatActivity {
                     i.putExtra("descripcion",descripcion);
                     i.putExtra("precio",precioDouble);
                     i.putExtra("calorias",calorias);
+                    i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
                     startActivity(i);
                     //startActivityForResult(i, CODIGO_ACTIVIDAD);
 
