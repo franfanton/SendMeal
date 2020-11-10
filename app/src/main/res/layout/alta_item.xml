@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|top"
         android:lines="3"
-        android:hint="@string/descripcion"
+        android:hint="@string/descripcionNuevoPlato"
         android:inputType="textMultiLine"
         android:maxLength="200"
         android:layout_marginBottom="@dimen/margenes_inferior" />
@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/precio"
+            android:hint="@string/precioNuevoPlato"
             android:inputType="numberDecimal"
             android:maxLength="6"/>
         <EditText
@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
-            android:hint="@string/calorias"
+            android:hint="@string/caloriasNuevoPlato"
             android:inputType="number"
             android:maxLength="4"/>
     </LinearLayout>
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/btnGuardarPlato"
-        android:hint="@string/guardarPlato"
+        android:hint="@string/guardarNuevoPlato"
         android:enabled="true"/>
 
 </LinearLayout>
