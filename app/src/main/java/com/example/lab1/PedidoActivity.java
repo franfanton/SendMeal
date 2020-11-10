@@ -1,5 +1,6 @@
 package com.example.lab1;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
@@ -21,10 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.lab1.model.Pedido;
+
+import java.util.Objects;
 
 public class PedidoActivity extends AppCompatActivity {
     // NOTIFICACION
@@ -33,11 +37,12 @@ public class PedidoActivity extends AppCompatActivity {
     // FIN NOTIFICACION
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
+    private TextView nombrePlato, totalNuevoPedido;
+  //  BotonAsyncTask botonAsyncTask;
+    private final int CODIGO_ACTIVIDAD = 1;
     // PARTE LAB 4 - PUNTO 3
     private ProgressBar progressBar1;
     //
-    public static int CODIGO_ACTIVIDAD = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +57,8 @@ public class PedidoActivity extends AppCompatActivity {
         direccionPedidoNuevo = (EditText) findViewById(R.id.direccionPedidoNuevo);
         botonEnvioPedido = (RadioButton) findViewById(R.id.botonEnvioPedido);
         botonTakeawayPedido = (RadioButton) findViewById(R.id.botonTakeawayPedido);
-  //      botonAsyncTask = new BotonAsyncTask();
+        nombrePlato = (TextView) findViewById(R.id.nombrePlato);
+        totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 
         botonAgregarPlato.setOnClickListener(new View.OnClickListener() {
@@ -60,27 +66,35 @@ public class PedidoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i;
                 i = new Intent(PedidoActivity.this, ListaPlatosActivity.class);
-                startActivityForResult(i,0);
-              //  startActivity(i);
+                i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
+                startActivityForResult(i,CODIGO_ACTIVIDAD);
             }
         });
 
         botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
+            String emailPattern = getString(R.string.mailCorrecto);
             @Override
             public void onClick(View view) {
 
                 if (correoPedidoNuevo.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo de correo electronico esta vacío.", Toast.LENGTH_SHORT).show();
+                }else if(!(correoPedidoNuevo.getText().toString().trim().matches(emailPattern))) {
+                    Toast.makeText(getApplicationContext(),"Ingrese un correo valido",Toast.LENGTH_SHORT).show();
                 }else if (direccionPedidoNuevo.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "El campo direccion esta vacío.", Toast.LENGTH_SHORT).show();
                 }else if(!(botonEnvioPedido.isChecked() || botonTakeawayPedido.isChecked())){
                         Toast.makeText(getApplicationContext(), "Seleccione el tipo de envio.", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(nombrePlato.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Debe seleccionar un plato del menú.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Pedido Realizado!", Toast.LENGTH_SHORT).show();
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio = botonEnvioPedido.getText().toString();
 
                     Pedido nuevoPedido = new Pedido(correo, direccion, tipoEnvio);
+
                     // INTENT
                     //Intent i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
                     //i.putExtra("correo",correo);
@@ -93,12 +107,31 @@ public class PedidoActivity extends AppCompatActivity {
                     int delay = 8;
                     String tittle = "Send Mail";
                     String content = "Pedido cargado con exito!";
+
                     scheduleNotification(getNotification(content, tittle), delay);
+
                 }
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && requestCode == CODIGO_ACTIVIDAD) {
+            assert data != null;
+            if (data.hasExtra("titulo")) {
+                String tituloPlato = "- "+data.getStringExtra("titulo")+" x"+data.getStringExtra("unidades");
+                String precioPlato = data.getStringExtra("precio");
+                int unidad, costo, total;
+                unidad = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("unidades")));
+                costo = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("precio")));
+                total = unidad*costo;
+                nombrePlato.setText(tituloPlato);
+                totalNuevoPedido.setText(total+"");
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
     class Task extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
@@ -123,6 +156,8 @@ public class PedidoActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

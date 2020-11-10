@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/correoNuevoPedido"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:layout_marginBottom="@dimen/margenes_inferior" />
 
     <EditText
@@ -80,7 +80,16 @@
         android:layout_height="wrap_content"
         android:text="@string/tituloListadoNuevoPedido"
         android:textSize="20sp"
-        android:layout_marginBottom="@dimen/margenes_inferior" />
+ />
+
+    <TextView
+        android:id="@+id/nombrePlato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_marginBottom="@dimen/margenes_inferior"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,8 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="TOTAL"
-            android:inputType="numberDecimal"/>
+            />
     </LinearLayout>
 
     <Button
