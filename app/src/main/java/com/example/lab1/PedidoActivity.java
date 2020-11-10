@@ -88,7 +88,7 @@ public class PedidoActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Debe seleccionar un plato del menú.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Pedido Realizado!", Toast.LENGTH_SHORT).show();
+
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio = botonEnvioPedido.getText().toString();
