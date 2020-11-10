@@ -50,17 +50,32 @@
         <item>2029</item>
         <item>2030</item>
     </string-array>
-    <!-- STRING LAB 01-->
+    <!-- FIN STRING LAB 01-->
 
     <!-- STRING LAB 02-->
     <string name="tituloNuevoPlato">Nuevo Plato</string>
     <string name="titulo">Título</string>
-    <string name="descripcion">Descripción</string>
-    <string name="precio">Precio</string>
-    <string name="calorias">Calorías</string>
-    <string name="guardarPlato">Guardar</string>
-    <!-- STRING LAB 02-->
+    <string name="descripcionNuevoPlato">Descripción</string>
+    <string name="precioNuevoPlato">Precio</string>
+    <string name="caloriasNuevoPlato">Calorías</string>
+    <string name="guardarNuevoPlato">Guardar</string>
+    <!-- FIN STRING LAB 02-->
 
+    <!-- STRING LAB 03-->
+    <string name="tituloNuevoPedido">Nuevo Pedido</string>
+    <string name="correoNuevoPedido">Ingrese correo electronico</string>
+    <string name="direccionNuevoPedido">Ingrese la dirección de destino</string>
+    <string name="tipoNuevoPedido">Tipo de pedido: </string>
+    <string name="envioNuevoPedido">Envio</string>
+    <string name="takeawayNuevoPedido">Take Away</string>
+    <string name="listadoPlatosNuevoPedido">Ver Platos</string>
+    <string name="tituloListadoNuevoPedido">Plato a pedir:</string>
+    <string name="totalNuevoPedido">Total del pedido: $</string>
+
+    <string name="guardarNuevoPedido">Realizar Pedido</string>
+    <string name="unidades">Unidades:</string>
+    <string name="agregar">+ Agregar +</string>
+    <!-- FIN STRING LAB 03-->
 </resources>
 
 
