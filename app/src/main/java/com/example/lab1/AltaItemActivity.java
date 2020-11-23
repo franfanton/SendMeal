@@ -40,7 +40,7 @@ public class AltaItemActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Intent i = new Intent(CrearItemActivity.this, PruebaActivity.this);
-                precioDouble = Double.parseDouble(precioPlato.getText().toString());
+
 
                 if (tituloPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo título esta vacío.", Toast.LENGTH_SHORT).show();
@@ -48,7 +48,7 @@ public class AltaItemActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "El campo descripción esta vacío.", Toast.LENGTH_SHORT).show();
                 } else if (precioPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo precio esta vacío.", Toast.LENGTH_SHORT).show();
-                } else if (precioDouble <= 0 ){
+                } else if ((precioPlato.getText().toString().equals("0")) ){
                     Toast.makeText(getApplicationContext(), "El precio debe ser mayor a $0.", Toast.LENGTH_SHORT).show();
                 } else if (caloriasPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo calorías esta vacío.", Toast.LENGTH_SHORT).show();
@@ -57,13 +57,14 @@ public class AltaItemActivity extends AppCompatActivity {
                     String titulo = tituloPlato.getText().toString();
                     String descripcion = descripcionPlato.getText().toString();
                     String calorias = caloriasPlato.getText().toString();
+                    String precio = precioPlato.getText().toString();
 
-                    Plato nuevoPlato = new Plato(titulo, descripcion, precioDouble, calorias);
+                    Plato nuevoPlato = new Plato(titulo, descripcion, precio, calorias,"0");
                     // INTENT
                     Intent i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
                     i.putExtra("titulo",titulo);
                     i.putExtra("descripcion",descripcion);
-                    i.putExtra("precio",precioDouble);
+                    i.putExtra("precio",precio);
                     i.putExtra("calorias",calorias);
                     i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
                     startActivity(i);

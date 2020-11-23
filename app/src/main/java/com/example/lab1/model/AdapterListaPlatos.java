@@ -22,12 +22,12 @@ import java.util.List;
 
 
 public class AdapterListaPlatos extends RecyclerView.Adapter<AdapterListaPlatos.PruebaViewHolder> implements View.OnClickListener {
-    private final List<ListaPlatos> listaPrueba;
+    private final List<Plato> listaPrueba;
     private final int CODIGO_ACTIVIDAD;
     private View.OnClickListener listener;
     private String unidades;
 
-    public AdapterListaPlatos(List<ListaPlatos> listaPrueba, int CODIGO_ACTIVIDAD){
+    public AdapterListaPlatos(List<Plato> listaPrueba, int CODIGO_ACTIVIDAD){
         this.listaPrueba = listaPrueba;
         this.CODIGO_ACTIVIDAD = CODIGO_ACTIVIDAD;
     }
