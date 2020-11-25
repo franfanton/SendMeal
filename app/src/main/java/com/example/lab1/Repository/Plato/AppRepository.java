@@ -4,30 +4,30 @@ import android.app.Application;
 import android.util.Log;
 
 import com.example.lab1.Daos.PlatoDao;
+import com.example.lab1.Helpers.Callback;
 import com.example.lab1.Tareas.BuscarPlatoById;
 import com.example.lab1.Tareas.BuscarPlatos;
+import com.example.lab1.Tareas.GuardarPlato;
 import com.example.lab1.model.Plato;
 
 import java.util.List;
 
-public class AppRepository implements OnPlatoResultCallback {
+public class AppRepository {
     private PlatoDao platoDao;
-    private OnResultCallback callback;
+    private Callback callback;
 
-    public AppRepository(Application application, OnResultCallback context){
+    public AppRepository(Application application){
         AppDatabase db = AppDatabase.getInstance(application);
         platoDao = db.platoDao();
-        callback = context;
     }
 
-    public void insertar(final Plato plato){
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                platoDao.insertar(plato);
-            }
-        });
-    }
+//    public void insertar(final Plato plato){
+//        AppDatabase.databaseWriteExecutor.execute(() -> platoDao.insertar(plato));
+//    }
+
+    public void addPlato(Plato plato, Callback<String> callback) {
+        (new GuardarPlato(this.platoDao, callback, plato)).execute();
+    };
 
     public void borrar(final Plato plato){
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
@@ -51,14 +51,13 @@ public class AppRepository implements OnPlatoResultCallback {
         new BuscarPlatoById(platoDao, this).execute(id);
     }*/
 
-    public void buscarTodos() {
-        new BuscarPlatos(platoDao, this).execute();
+    public void buscarTodos(Callback<String> callback) {
+        new BuscarPlatos(platoDao, callback).execute();
     }
 
-    @Override
     public void onResult(List<Plato> platos) {
         Log.d("DEBUG", "Plato found");
-        callback.onResult(platos);
+        callback.onCallback(platos);
     }
 
     public interface OnResultCallback<T> {

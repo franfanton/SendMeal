@@ -14,7 +14,7 @@ import java.util.concurrent.Executor;
 
 @Database(entities = {Plato.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final AppDatabase INSTANCE = null;
+    //private static final AppDatabase INSTANCE = null;
     public static Executor databaseWriteExecutor;
 
     public abstract PlatoDao platoDao();

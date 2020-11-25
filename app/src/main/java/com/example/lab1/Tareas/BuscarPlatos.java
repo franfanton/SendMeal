@@ -3,6 +3,7 @@ package com.example.lab1.Tareas;
 import android.os.AsyncTask;
 
 import com.example.lab1.Daos.PlatoDao;
+import com.example.lab1.Helpers.Callback;
 import com.example.lab1.Repository.Plato.OnPlatoResultCallback;
 import com.example.lab1.model.Plato;
 
@@ -12,9 +13,9 @@ import java.util.List;
 public class BuscarPlatos extends AsyncTask<String, Void, List<Plato>> {
 
     private PlatoDao dao;
-    private OnPlatoResultCallback callback;
+    private Callback callback;
 
-    public BuscarPlatos(PlatoDao dao, OnPlatoResultCallback context) {
+    public BuscarPlatos(PlatoDao dao, Callback context) {
         this.dao = dao;
         this.callback = context;
     }
@@ -28,6 +29,6 @@ public class BuscarPlatos extends AsyncTask<String, Void, List<Plato>> {
     @Override
     protected void onPostExecute(List<Plato> platos) {
         super.onPostExecute(platos);
-        callback.onResult(platos);
+        callback.onCallback(platos);
     }
 }

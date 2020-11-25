@@ -14,8 +14,9 @@ public class Plato {
     private int imagen;
     private String unidades;
 
-    public Plato(String titulo, String descripcion, String precio, String calorias,String unidades) {
+    public Plato(int imagen, String titulo, String descripcion, String precio, String calorias, String unidades) {
 
+        this.imagen = imagen;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -23,6 +24,7 @@ public class Plato {
         this.unidades = unidades;
 
     }
+
 
     public String getPrecio() {
         return precio;
