@@ -1,13 +1,11 @@
-package com.example.lab1.Tareas;
+package com.example.lab1.Tareas.Platos;
 
 import android.os.AsyncTask;
 
 import com.example.lab1.Daos.PlatoDao;
 import com.example.lab1.Helpers.Callback;
-import com.example.lab1.Repository.Plato.OnPlatoResultCallback;
 import com.example.lab1.model.Plato;
 
-import java.util.List;
 
 public class GuardarPlato extends AsyncTask<Void, Void, String> {
     PlatoDao platoDAO;

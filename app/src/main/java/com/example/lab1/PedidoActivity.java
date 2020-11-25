@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,9 +28,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.lab1.Repository.Pedido.AppRepository;
+import com.example.lab1.Servicios.Pedido.PedidoService;
 import com.example.lab1.model.Pedido;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PedidoActivity extends AppCompatActivity {
     // NOTIFICACION
@@ -61,6 +74,31 @@ public class PedidoActivity extends AppCompatActivity {
         totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 
+
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.117:3001/")
+                // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        PedidoService pedidoService = retrofit.create(PedidoService.class);
+        Call<List<Pedido>> callPedidos = pedidoService.getPedidoList();
+        callPedidos.enqueue(new Callback<List<Pedido>>() {
+            @Override
+            public void onResponse(Call<List<Pedido>> call, Response<List<Pedido>> response) {
+                if (response.code() == 200) {
+                    Log.d("DEBUG", "Returno Exitoso");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Pedido>> call, Throwable t) {
+                Log.d("DEBUG", "Returno Fallido");
+            }
+        });
+
+        AppRepository repository = new AppRepository(this.getApplication());
         botonAgregarPlato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,18 +148,26 @@ public class PedidoActivity extends AppCompatActivity {
 
                     scheduleNotification(getNotification(content, tittle), delay);
 
+                    repository.addPedido(nuevoPedido, new com.example.lab1.Helpers.Callback<String>() {
+                        @Override
+                        public void onCallback(String s) {
+                            Log.i("info","Pedido agregado correctamente");
+                        }
+                    });
+                    Toast.makeText(getApplicationContext(), "Pedido Guardado en ROOM!", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == CODIGO_ACTIVIDAD) {
             assert data != null;
             if (data.hasExtra("titulo")) {
                 String tituloPlato = "- "+data.getStringExtra("titulo")+" x"+data.getStringExtra("unidades");
-                String precioPlato = data.getStringExtra("precio");
                 int unidad, costo, total;
                 unidad = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("unidades")));
                 costo = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("precio")));

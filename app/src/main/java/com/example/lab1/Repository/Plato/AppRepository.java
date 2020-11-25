@@ -5,9 +5,8 @@ import android.util.Log;
 
 import com.example.lab1.Daos.PlatoDao;
 import com.example.lab1.Helpers.Callback;
-import com.example.lab1.Tareas.BuscarPlatoById;
-import com.example.lab1.Tareas.BuscarPlatos;
-import com.example.lab1.Tareas.GuardarPlato;
+import com.example.lab1.Tareas.Platos.BuscarPlatos;
+import com.example.lab1.Tareas.Platos.GuardarPlato;
 import com.example.lab1.model.Plato;
 
 import java.util.List;

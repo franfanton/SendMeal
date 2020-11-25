@@ -1,9 +1,23 @@
 package com.example.lab1.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Pedido {
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
     private String correo;
     private String direccion;
     private String tipoEnvio;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Pedido(String correo, String direccion, String tipoEnvio) {
         this.correo = correo;
