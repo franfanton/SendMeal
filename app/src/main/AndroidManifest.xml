@@ -25,5 +25,4 @@
         </activity>
         <receiver android:name = ".MyNotificationPublisher" />
     </application>
-
 </manifest>
