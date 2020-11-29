@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import com.example.lab1.Repository.Pedido.AppRepository;
 import com.example.lab1.Servicios.Pedido.PedidoService;
 import com.example.lab1.model.Pedido;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -51,7 +53,8 @@ public class PedidoActivity extends AppCompatActivity {
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
     private TextView nombrePlato, totalNuevoPedido;
-  //  BotonAsyncTask botonAsyncTask;
+    private Button botonAgregarUbicacion;
+    //  BotonAsyncTask botonAsyncTask;
     private final int CODIGO_ACTIVIDAD = 1;
     // PARTE LAB 4 - PUNTO 3
     private ProgressBar progressBar1;
@@ -73,11 +76,12 @@ public class PedidoActivity extends AppCompatActivity {
         nombrePlato = (TextView) findViewById(R.id.nombrePlato);
         totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+        botonAgregarUbicacion = (Button) findViewById(R.id.botonUbicacion);
 
 
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.117:3001/")
+                .baseUrl("http://10.0.2.2:3001/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -109,8 +113,25 @@ public class PedidoActivity extends AppCompatActivity {
             }
         });
 
+        botonEnvioPedido.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                botonAgregarUbicacion.setEnabled(botonEnvioPedido.isChecked());
+            }
+        });
+
+        botonAgregarUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PedidoActivity.this, MapActivity.class);
+                LatLng ubicacion = null;
+                i.putExtra("ubicacion",ubicacion);
+                startActivityForResult(i, CODIGO_ACTIVIDAD);
+            }
+        });
+
         botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
-            String emailPattern = getString(R.string.mailCorrecto);
+            final String emailPattern = getString(R.string.mailCorrecto);
             @Override
             public void onClick(View view) {
 
@@ -126,7 +147,6 @@ public class PedidoActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Debe seleccionar un plato del menú.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio = botonEnvioPedido.getText().toString();
@@ -178,6 +198,7 @@ public class PedidoActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    @SuppressLint("StaticFieldLeak")
     class Task extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
@@ -212,6 +233,7 @@ public class PedidoActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent i;

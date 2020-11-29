@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <!--AGREGAMOS API DE GOOGLE-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <!--ACTIVITIES DE LA APLICACIÓN-->
         <activity android:name=".AltaItemActivity"/>
         <activity android:name=".AltaUsuarioActivity"/>
         <activity android:name=".ListaPlatosActivity"/>
