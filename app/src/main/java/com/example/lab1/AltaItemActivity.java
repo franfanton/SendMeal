@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lab1.Repository.Plato.AppRepository;
+import com.example.lab1.Servicios.Plato.PlatoService;
 import com.example.lab1.model.Plato;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AltaItemActivity extends AppCompatActivity {
     private TextView nuevoPlato;
@@ -35,12 +48,37 @@ public class AltaItemActivity extends AppCompatActivity {
         precioPlato = findViewById(R.id.precioPlato);
         caloriasPlato = findViewById(R.id.caloriasPlato);
 
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.117:3001/")
+                // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        PlatoService platoService = retrofit.create(PlatoService.class);
+        Call<List<Plato>> callPlatos = platoService.getPlatoList();
+        callPlatos.enqueue(new Callback<List<Plato>>() {
+            @Override
+            public void onResponse(Call<List<Plato>> call, Response<List<Plato>> response) {
+                if (response.code() == 200) {
+                    Log.d("DEBUG", "Returno Exitoso");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Plato>> call, Throwable t) {
+                Log.d("DEBUG", "Returno Fallido");
+            }
+        });
+
+        AppRepository repository = new AppRepository(this.getApplication());
+
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // Intent i = new Intent(CrearItemActivity.this, PruebaActivity.this);
-                precioDouble = Double.parseDouble(precioPlato.getText().toString());
+
 
                 if (tituloPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo título esta vacío.", Toast.LENGTH_SHORT).show();
@@ -48,27 +86,31 @@ public class AltaItemActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "El campo descripción esta vacío.", Toast.LENGTH_SHORT).show();
                 } else if (precioPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo precio esta vacío.", Toast.LENGTH_SHORT).show();
-                } else if (precioDouble <= 0 ){
+                } else if ((precioPlato.getText().toString().equals("0")) ){
                     Toast.makeText(getApplicationContext(), "El precio debe ser mayor a $0.", Toast.LENGTH_SHORT).show();
                 } else if (caloriasPlato.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "El campo calorías esta vacío.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Plato Guardado!", Toast.LENGTH_SHORT).show();
                     String titulo = tituloPlato.getText().toString();
                     String descripcion = descripcionPlato.getText().toString();
                     String calorias = caloriasPlato.getText().toString();
+                    String precio = precioPlato.getText().toString();
 
-                    Plato nuevoPlato = new Plato(titulo, descripcion, precioDouble, calorias);
-                    // INTENT
+                    Plato nuevoPlato = new Plato(R.drawable.plato, titulo, descripcion, precio, calorias,"0");
+                    repository.addPlato(nuevoPlato, new com.example.lab1.Helpers.Callback<String>() {
+                        @Override
+                        public void onCallback(String s) {
+                            Log.i("info","Pedido agregado correctamente");
+                        }
+                    });
+                    Toast.makeText(getApplicationContext(), "Plato Guardado en ROOM!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(AltaItemActivity.this, ListaPlatosActivity.class);
                     i.putExtra("titulo",titulo);
                     i.putExtra("descripcion",descripcion);
-                    i.putExtra("precio",precioDouble);
+                    i.putExtra("precio",precio);
                     i.putExtra("calorias",calorias);
                     i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
                     startActivity(i);
-                    //startActivityForResult(i, CODIGO_ACTIVIDAD);
-
                 }
             }
         });
