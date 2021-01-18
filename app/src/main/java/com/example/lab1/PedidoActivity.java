@@ -30,15 +30,20 @@ import android.widget.Toast;
 
 
 import com.example.lab1.Repository.Pedido.AppRepository;
+//import com.example.lab1.Repository.AppRepository;
 import com.example.lab1.Servicios.Pedido.PedidoService;
 import com.example.lab1.model.Pedido;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,12 +83,23 @@ public class PedidoActivity extends AppCompatActivity {
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
         botonAgregarUbicacion = (Button) findViewById(R.id.botonUbicacion);
 
+        // Create a new object from HttpLoggingInterceptor
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // Add Interceptor to HttpClient
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(interceptor).build();
+
 
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3001/")
+                .baseUrl("http://192.168.0.117:3000/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
 
         PedidoService pedidoService = retrofit.create(PedidoService.class);
@@ -91,15 +107,38 @@ public class PedidoActivity extends AppCompatActivity {
         callPedidos.enqueue(new Callback<List<Pedido>>() {
             @Override
             public void onResponse(Call<List<Pedido>> call, Response<List<Pedido>> response) {
-                if (response.code() == 200) {
-                    Log.d("DEBUG", "Returno Exitoso");
+                switch (response.code()){
+                    case 200:
+                        Log.d("DEBUG", "Returno 200");
+                        break;
+                    case 401:
+                        Log.d("DEBUG", "Returno 401");
+                        break;
+                    case 403:
+                        Log.d("DEBUG", "Returno 403");
+                        break;
+                    case 500:
+                        Log.d("DEBUG", "Returno 500");
+                        break;
+                    default:
+                        Log.d("DEBUG", "Returno default");
+                        break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<Pedido>> call, Throwable t) {
-                Log.d("DEBUG", "Returno Fallido");
+                Log.d("DEBUG", "ERROR: "+t.getMessage());
             }
+//                if (response.code() == 200) {
+//                    Log.d("DEBUG", "Returno Exitoso");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Pedido>> call, Throwable t) {
+//                Log.d("DEBUG", "Returno Fallido");
+//            }
         });
 
         AppRepository repository = new AppRepository(this.getApplication());
@@ -120,11 +159,19 @@ public class PedidoActivity extends AppCompatActivity {
             }
         });
 
+        botonTakeawayPedido.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                direccionPedidoNuevo.setEnabled(true);
+                direccionPedidoNuevo.setText("");
+            }
+        });
+
         botonAgregarUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(PedidoActivity.this, MapActivity.class);
-                LatLng ubicacion = null;
+                LatLng ubicacion = new LatLng(0,0);
                 i.putExtra("ubicacion",ubicacion);
                 startActivityForResult(i, CODIGO_ACTIVIDAD);
             }
@@ -181,6 +228,19 @@ public class PedidoActivity extends AppCompatActivity {
         });
     }
 
+
+//    public List<Pedido> getPedidoList() {
+//        Call<List<Pedido>> invocacionSyn = pedidoService.getPedidoList();
+//        Response<List<Pedido>> res = null;
+//        try {
+//            res = invocacionSyn.execute();
+//        }
+//        catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return res.body();
+//    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -194,6 +254,19 @@ public class PedidoActivity extends AppCompatActivity {
                 total = unidad*costo;
                 nombrePlato.setText(tituloPlato);
                 totalNuevoPedido.setText(total+"");
+            }
+            else if (data.hasExtra("ubicacion")){
+                LatLng ubicacion = data.getParcelableExtra("ubicacion");
+                if (ubicacion.longitude != 0 && ubicacion.latitude != 0){
+                    direccionPedidoNuevo.setText("Ubicación agregada a través de Google Maps.");
+                    direccionPedidoNuevo.setEnabled(false);
+                }
+                else {
+                    Toast.makeText(this, "No se agregó ninguna ubicación, intente nuevamente.", Toast.LENGTH_LONG).show();
+                    direccionPedidoNuevo.setText("");
+                }
+                //direccionPedidoNuevo.setText(ubicacion.toString());
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

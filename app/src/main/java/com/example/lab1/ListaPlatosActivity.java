@@ -50,7 +50,7 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
         // LAB 4
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3001/")
+                .baseUrl("http://10.0.2.2:5000/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -62,23 +62,34 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
             public void onResponse(Call<List<Plato>> call, Response<List<Plato>> response) {
                 if (response.code() == 200) {
                     Log.d("DEBUG", "Returno Exitoso");
+                    listaPruebas = response.body();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"El codigo de error es: "+response.code(),Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Plato>> call, Throwable t) {
                 Log.d("DEBUG", "Returno Fallido");
+                Toast.makeText(getApplicationContext(),"Throwable t: "+t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 
-
         AppRepository repository = new AppRepository(this.getApplication());
+//        repository.buscarTodos(new com.example.lab1.Helpers.Callback<String>() {
+//            @Override
+//            public void onCallback(String s) {
+//                Log.i("info","Pedido agregado correctamente");
+//                Toast.makeText(getApplicationContext(),"El codigo de error es: "+s,Toast.LENGTH_LONG).show();
+//            }
+//        });
         // FIN LAB 4
 
         // PRUEBA
         final RecyclerView rvPruebas = findViewById(R.id.rvPruebas);
-        //listaPruebas = (List<Plato>)callPlatos;
         listaPruebas = new ArrayList<>();
+
         listaPruebas.add(new Plato(R.drawable.pizza,"Pizza","Pizza casera con salsa de tomate, finas hierbas y queso cremoso.","350","750", "0"));
         listaPruebas.add(new Plato(R.drawable.tallarines,"Tallarines","Pasta casera con queso y salsa de tomates.","300","400", "0"));
         listaPruebas.add(new Plato(R.drawable.pollo,"Pollo","Pollo a la parrilla con salsa de chimichurri.","450","450", "0"));

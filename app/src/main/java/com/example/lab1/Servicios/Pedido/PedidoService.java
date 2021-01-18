@@ -14,9 +14,9 @@ public interface PedidoService {
     @GET("pedido/{id}")
     Call<Pedido> getPedido(@Path("id") String id);
 
-    @GET("model/pedido")
+    @GET("pedido/")
     Call<List<Pedido>> getPedidoList();
 
-    @POST("pedido")
+    @POST("pedido/")
     Call<Pedido> createPedido(@Body Pedido pedido);
 }

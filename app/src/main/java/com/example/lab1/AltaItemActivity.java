@@ -50,7 +50,7 @@ public class AltaItemActivity extends AppCompatActivity {
 
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3001/")
+                .baseUrl("http://10.0.2.2:5000/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

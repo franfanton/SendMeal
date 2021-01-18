@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.lab1.Daos.PlatoDao;
 import com.example.lab1.Helpers.Callback;
+import com.example.lab1.Tareas.Platos.BuscarPlatoById;
 import com.example.lab1.Tareas.Platos.BuscarPlatos;
 import com.example.lab1.Tareas.Platos.GuardarPlato;
 import com.example.lab1.model.Plato;
@@ -46,11 +47,11 @@ public class AppRepository {
         });
     }
 
-    /*public void buscar(String id) {
-        new BuscarPlatoById(platoDao, this).execute(id);
-    }*/
+//    public void buscar(String id) {
+//        new BuscarPlatoById(platoDao, this).execute(id);
+//    }
 
-    public void buscarTodos(Callback<String> callback) {
+    public void buscarTodos(Callback<Plato> callback) {
         new BuscarPlatos(platoDao, callback).execute();
     }
 

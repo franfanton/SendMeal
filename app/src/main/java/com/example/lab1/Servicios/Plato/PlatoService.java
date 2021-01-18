@@ -14,9 +14,9 @@ public interface PlatoService {
     @GET("plato/{id}")
     Call<Plato> getPlato(@Path("id") String id);
 
-    @GET("model/plato")
+    @GET("plato/")
     Call<List<Plato>> getPlatoList();
 
-    @POST("plato")
+    @POST("plato/")
     Call<Plato> createPlato(@Body Plato plato);
 }

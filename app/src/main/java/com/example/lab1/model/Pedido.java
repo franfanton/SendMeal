@@ -12,15 +12,15 @@ public class Pedido {
     private String correo;
     private String direccion;
     private String tipoEnvio;
-//    private LatLng ubicacion;
-//
-//    public LatLng getUbicacion() {
-//        return ubicacion;
-//    }
-//
-//    public void setUbicacion(LatLng ubicacion) {
-//        this.ubicacion = ubicacion;
-//    }
+    private String ubicacion;
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
 
     public Long getId() {
         return id;

@@ -21,6 +21,6 @@ public abstract class AppDatabase extends RoomDatabase {
     static AppDatabase getInstance(final Context context) {
         /* .... */
         //return INSTANCE;
-        return Room.databaseBuilder(context, AppDatabase.class, "database-name").build();
+        return Room.databaseBuilder(context, AppDatabase.class, "database-SendMeal").build();
     }
 }
