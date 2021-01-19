@@ -4,6 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -13,19 +16,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.lab1.Helpers.PermissionUtils;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final LatLng SFO = new LatLng(-31.635754, -60.68295565);
-    private static final LatLng SOH = new LatLng(-31.6169202, -60.675051238656);
+    private static final LatLng UTN = new LatLng(-31.6169202, -60.675051238656);
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap myMap;
-    LatLng ubicacion;
+    LatLng ubicacion, miUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -55,22 +62,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             if (myMap != null) {
                 myMap.setMyLocationEnabled(true);
-                //myMap.moveCamera();
+
+//                Location miUbicacion = myMap.getMyLocation();
+//                LatLng latLngMiUbicacion = new LatLng(miUbicacion.getLatitude(), miUbicacion.getLongitude());
+//                myMap.moveCamera(CameraUpdateFactory.newLatLng(latLngMiUbicacion));
+
             }
         } else {
             // Permission to access the location is missing. Show rationale and request permission
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
-            myMap.setMyLocationEnabled(true);
+            //myMap.setMyLocationEnabled(true);
+//            Location miUbicacion = myMap.getMyLocation();
+//            LatLng latLngMiUbicacion = new LatLng(miUbicacion.getLatitude(), miUbicacion.getLongitude());
+//            myMap.moveCamera(CameraUpdateFactory.newLatLng(latLngMiUbicacion));
+
         }
 
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+        if(location!=null){
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            //LatLng latLng = new LatLng(latitude, longitude);
+            miUbicacion = new LatLng(latitude, longitude);
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miUbicacion, 18));
+        }
 
         // Move to a place with indoor (SFO airport).
 //        int currentLeft = 0, currentTop = 0, currentRight = 0, currentBottom = 0;
 //        myMap.setPadding(currentLeft, currentTop, currentRight, currentBottom);
 //        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SFO, 18));
         // Add a marker to the Opera House.
-        myMap.addMarker(new MarkerOptions().position(SOH).title("UTN PERRI"));
+        myMap.addMarker(new MarkerOptions().position(UTN).title("UTN PERRI"));
         // Add a camera idle listener.
         myMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override

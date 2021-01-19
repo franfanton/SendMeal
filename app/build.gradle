@@ -30,7 +30,6 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -49,5 +48,10 @@ dependencies {
     //Sirve para debuggear las peticiones
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
+    // Utilities for Maps SDK for Android (requires Google Play Services)
+    //implementation 'com.google.maps.android:android-maps-utils:2.1.0'
+
+    // Alternately - Utilities for Maps SDK v3 BETA for Android (does not require Google Play Services)
+    //implementation 'com.google.maps.android:android-maps-utils-v3:2.1.0'
 
 }
