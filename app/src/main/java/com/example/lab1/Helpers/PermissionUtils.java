@@ -28,7 +28,6 @@ public abstract class PermissionUtils {
         } else {
             // Location permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-
         }
     }
 

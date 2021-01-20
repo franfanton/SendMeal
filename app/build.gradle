@@ -4,6 +4,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    //Agregado para Firebase
+    apply plugin: 'com.android.application'
+    apply plugin: 'com.google.gms.google-services'
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -49,9 +53,19 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
     // Utilities for Maps SDK for Android (requires Google Play Services)
-    //implementation 'com.google.maps.android:android-maps-utils:2.1.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.1.0'
 
     // Alternately - Utilities for Maps SDK v3 BETA for Android (does not require Google Play Services)
     //implementation 'com.google.maps.android:android-maps-utils-v3:2.1.0'
 
+    //Agregado para Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.3.0')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    //Dependencias para punto 8 del Lab5
+    // Declare the dependency for the Cloud Storage library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-storage'
+    // Declare the dependency for the Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth'
 }
