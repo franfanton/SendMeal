@@ -1,10 +1,16 @@
 package com.example.lab1;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +24,16 @@ import android.widget.Toast;
 import com.example.lab1.Repository.Plato.AppRepository;
 import com.example.lab1.Servicios.Plato.PlatoService;
 import com.example.lab1.model.Plato;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +47,9 @@ public class AltaItemActivity extends AppCompatActivity {
     private EditText tituloPlato, descripcionPlato, precioPlato, caloriasPlato;
     private Double precioDouble;
     public static int CODIGO_ACTIVIDAD = 0;
+    static final int CAMARA_REQUEST = 1;
+    static final int GALERIA_REQUEST = 2;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +58,8 @@ public class AltaItemActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
         Button guardar = findViewById(R.id.botonGuardarPlato);
+        Button camara = findViewById(R.id.botonSacarFoto);
+        Button galeria = findViewById(R.id.botonBuscarGaleria);
 
         tituloPlato = findViewById(R.id.tituloPlato);
         descripcionPlato = findViewById(R.id.descripcionPlato);
@@ -72,6 +90,20 @@ public class AltaItemActivity extends AppCompatActivity {
         });
 
         AppRepository repository = new AppRepository(this.getApplication());
+
+        camara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lanzarCamara();
+            }
+        });
+
+        galeria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirGaleria();
+            }
+        });
 
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +147,64 @@ public class AltaItemActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void lanzarCamara() {
+        Intent camaraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camaraIntent, CAMARA_REQUEST);
+    }
+
+    private void abrirGaleria() {
+        Intent galeriaIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(galeriaIntent, GALERIA_REQUEST);
+    }
+
+    @SuppressLint({"SetTextI18n", "MissingSuperCall"})
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && (requestCode == CAMARA_REQUEST || requestCode == GALERIA_REQUEST)){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bytes = baos.toByteArray(); // Imagen en arreglo de bytes
+            StorageReference storageRef = storage.getReference();
+
+            // Creamos una referencia a 'images/plato_id.jpg'
+            StorageReference platosImagesRef = storageRef.child("images/plato_id.jpg");
+
+            // Cual quiera de los tres métodos tienen la misma implementación, se debe utilizar el que corresponda
+            UploadTask uploadTask = platosImagesRef.putBytes(bytes);
+            // UploadTask uploadTask = platosImagesRef.putFile(file);
+            // UploadTask uploadTask = platosImagesRef.putStream(stream);
+
+            // Registramos un listener para saber el resultado de la operación
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continuamos con la tarea para obtener la URL
+                    return platosImagesRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        // URL de descarga del archivo
+                        Uri downloadUri = task.getResult();
+                    } else {
+                        // Fallo
+                        Toast.makeText(getApplicationContext(),"FALLÓ",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            Toast.makeText(getApplicationContext(),"Vuelve",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
