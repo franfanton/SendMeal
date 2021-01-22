@@ -34,8 +34,6 @@ import com.google.maps.android.SphericalUtil;
 import java.util.Random;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private static final LatLng SFO = new LatLng(-31.635754, -60.68295565);
-    private static final LatLng UTN = new LatLng(-31.6169202, -60.675051238656);
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap myMap;
     LatLng ubicacion, miUbicacion;

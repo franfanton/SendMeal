@@ -196,7 +196,13 @@ public class PedidoActivity extends AppCompatActivity {
                 else {
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
-                    String tipoEnvio = botonEnvioPedido.getText().toString();
+                    String tipoEnvio;
+                    if (botonEnvioPedido.isChecked()){
+                        tipoEnvio = botonEnvioPedido.getText().toString();
+                    } else {
+                        tipoEnvio = botonTakeawayPedido.getText().toString();
+                    }
+
 
                     Pedido nuevoPedido = new Pedido(correo, direccion, tipoEnvio);
 
