@@ -36,7 +36,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,12 +77,23 @@ public class PedidoActivity extends AppCompatActivity {
         totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 
+        // Create a new object from HttpLoggingInterceptor
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // Add Interceptor to HttpClient
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(interceptor).build();
+
 
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.117:3001/")
+                .baseUrl("http://10.0.2.2:3001/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
 
         PedidoService pedidoService = retrofit.create(PedidoService.class);
@@ -87,14 +101,28 @@ public class PedidoActivity extends AppCompatActivity {
         callPedidos.enqueue(new Callback<List<Pedido>>() {
             @Override
             public void onResponse(Call<List<Pedido>> call, Response<List<Pedido>> response) {
-                if (response.code() == 200) {
-                    Log.d("DEBUG", "Returno Exitoso");
+                switch (response.code()){
+                    case 200:
+                        Log.d("DEBUG", "Returno 200");
+                        break;
+                    case 401:
+                        Log.d("DEBUG", "Returno 401");
+                        break;
+                    case 403:
+                        Log.d("DEBUG", "Returno 403");
+                        break;
+                    case 500:
+                        Log.d("DEBUG", "Returno 500");
+                        break;
+                    default:
+                        Log.d("DEBUG", "Returno default");
+                        break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<Pedido>> call, Throwable t) {
-                Log.d("DEBUG", "Returno Fallido");
+                Log.d("DEBUG", "ERROR: "+t.getMessage());
             }
         });
 
@@ -110,7 +138,7 @@ public class PedidoActivity extends AppCompatActivity {
         });
 
         botonRealizarPedido.setOnClickListener(new View.OnClickListener() {
-            String emailPattern = getString(R.string.mailCorrecto);
+            final String emailPattern = getString(R.string.mailCorrecto);
             @Override
             public void onClick(View view) {
 
@@ -129,7 +157,12 @@ public class PedidoActivity extends AppCompatActivity {
 
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
-                    String tipoEnvio = botonEnvioPedido.getText().toString();
+                    String tipoEnvio;
+                    if (botonEnvioPedido.isChecked()){
+                        tipoEnvio = botonEnvioPedido.getText().toString();
+                    } else {
+                        tipoEnvio = botonTakeawayPedido.getText().toString();
+                    }
 
                     Pedido nuevoPedido = new Pedido(correo, direccion, tipoEnvio);
 
@@ -212,6 +245,7 @@ public class PedidoActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent i;

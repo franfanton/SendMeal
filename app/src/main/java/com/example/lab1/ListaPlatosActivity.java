@@ -62,12 +62,17 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
             public void onResponse(Call<List<Plato>> call, Response<List<Plato>> response) {
                 if (response.code() == 200) {
                     Log.d("DEBUG", "Returno Exitoso");
+                    listaPruebas = response.body();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"El codigo de error es: "+response.code(),Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Plato>> call, Throwable t) {
                 Log.d("DEBUG", "Returno Fallido");
+                Toast.makeText(getApplicationContext(),"Throwable t: "+t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 
