@@ -1,14 +1,16 @@
 package com.example.lab1.model;
 
+import android.widget.ImageView;
+
 public class ListaPlatos {
-    private int  imagen;
+    private ImageView imagen;
     private String titulo;
     private String descripcion;
     private String precio;
     private String calorias;
     private String unidades;
 
-    public ListaPlatos(int  imagen, String titulo, String descripcion, String precio, String calorias, String unidades) {
+    public ListaPlatos(ImageView  imagen, String titulo, String descripcion, String precio, String calorias, String unidades) {
         this.imagen = imagen;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -17,11 +19,11 @@ public class ListaPlatos {
         this.unidades = unidades;
     }
 
-    public int getImagen() {
+    public ImageView getImagen() {
         return imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(ImageView imagen) {
         this.imagen = imagen;
     }
 
