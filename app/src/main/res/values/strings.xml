@@ -76,6 +76,13 @@
     <string name="unidades">Unidades:</string>
     <string name="agregar">+ Agregar +</string>
     <!-- FIN STRING LAB 03-->
+
+    <!--STRING LAB 05-->
+    <string name="google_maps_key">AIzaSyB3r26xeFJCa_L5S6tbrIRsyqibZVFWRGk</string>
+    <string name="btnAgregarUbicacion">Agregar Ubicacion Actual</string>
+    <string name="permiso_ubicacion">Se necesitan los permisos de localización, ¿Acepta concederlos?</string>
+    <!-- FIN STRING LAB 05-->
+
 </resources>
 
 

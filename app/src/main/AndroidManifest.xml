@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lab1">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
@@ -12,6 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <!--AGREGAMOS API DE GOOGLE-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <!--ACTIVITIES DE LA APLICACIÓN-->
+        <activity android:name=".MapActivity"/>
         <activity android:name=".AltaItemActivity"/>
         <activity android:name=".AltaUsuarioActivity"/>
         <activity android:name=".ListaPlatosActivity"/>
@@ -24,5 +33,16 @@
             </intent-filter>
         </activity>
         <receiver android:name = ".MyNotificationPublisher" />
+
+        <!--SERVICIO PARA NOTIFICACION PUSH DE FIREBASE-->
+        <service
+            android:name=".Servicios.MyFirebaseMessagingService"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 </manifest>
