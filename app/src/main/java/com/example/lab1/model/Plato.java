@@ -1,5 +1,7 @@
 package com.example.lab1.model;
 
+import android.widget.ImageView;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,7 +14,19 @@ public class Plato {
     private String precio;
     private String calorias;
     private int imagen;
+//    private ImageView imageView;
     private String unidades;
+
+//    public Plato(ImageView imageView, String titulo, String descripcion, String precio, String calorias, String unidades) {
+//
+//        this.imageView = imageView;
+//        this.titulo = titulo;
+//        this.descripcion = descripcion;
+//        this.precio = precio;
+//        this.calorias = calorias;
+//        this.unidades = unidades;
+//
+//    }
 
     public Plato(int imagen, String titulo, String descripcion, String precio, String calorias, String unidades) {
 
@@ -33,6 +47,14 @@ public class Plato {
     public void setPrecio(String precio) {
         this.precio = precio;
     }
+
+//    public ImageView getImageView() {
+//        return imageView;
+//    }
+//
+//    public void setImageView(ImageView imageView) {
+//        this.imageView = imageView;
+//    }
 
     public int getImagen() {
         return imagen;

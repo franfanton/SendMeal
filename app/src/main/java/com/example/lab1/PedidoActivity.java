@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -29,11 +30,14 @@ import android.widget.Toast;
 
 
 import com.example.lab1.Repository.Pedido.AppRepository;
+//import com.example.lab1.Repository.AppRepository;
 import com.example.lab1.Servicios.Pedido.PedidoService;
 import com.example.lab1.model.Pedido;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +58,8 @@ public class PedidoActivity extends AppCompatActivity {
     private EditText correoPedidoNuevo, direccionPedidoNuevo;
     private RadioButton botonEnvioPedido,botonTakeawayPedido;
     private TextView nombrePlato, totalNuevoPedido;
-  //  BotonAsyncTask botonAsyncTask;
+    private Button botonAgregarUbicacion;
+    //  BotonAsyncTask botonAsyncTask;
     private final int CODIGO_ACTIVIDAD = 1;
     // PARTE LAB 4 - PUNTO 3
     private ProgressBar progressBar1;
@@ -76,6 +81,7 @@ public class PedidoActivity extends AppCompatActivity {
         nombrePlato = (TextView) findViewById(R.id.nombrePlato);
         totalNuevoPedido = (TextView) findViewById(R.id.totalNuevoPedido);
         progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+        botonAgregarUbicacion = (Button) findViewById(R.id.botonUbicacion);
 
         // Create a new object from HttpLoggingInterceptor
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -90,7 +96,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3001/")
+                .baseUrl("http://192.168.0.117:3000/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
@@ -124,6 +130,15 @@ public class PedidoActivity extends AppCompatActivity {
             public void onFailure(Call<List<Pedido>> call, Throwable t) {
                 Log.d("DEBUG", "ERROR: "+t.getMessage());
             }
+//                if (response.code() == 200) {
+//                    Log.d("DEBUG", "Returno Exitoso");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Pedido>> call, Throwable t) {
+//                Log.d("DEBUG", "Returno Fallido");
+//            }
         });
 
         AppRepository repository = new AppRepository(this.getApplication());
@@ -134,6 +149,31 @@ public class PedidoActivity extends AppCompatActivity {
                 i = new Intent(PedidoActivity.this, ListaPlatosActivity.class);
                 i.putExtra("CODIGO_ACTIVIDAD", CODIGO_ACTIVIDAD);
                 startActivityForResult(i,CODIGO_ACTIVIDAD);
+            }
+        });
+
+        botonEnvioPedido.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                botonAgregarUbicacion.setEnabled(botonEnvioPedido.isChecked());
+            }
+        });
+
+        botonTakeawayPedido.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                direccionPedidoNuevo.setEnabled(true);
+                direccionPedidoNuevo.setText("");
+            }
+        });
+
+        botonAgregarUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PedidoActivity.this, MapActivity.class);
+                LatLng ubicacion = new LatLng(0,0);
+                i.putExtra("ubicacion",ubicacion);
+                startActivityForResult(i, CODIGO_ACTIVIDAD);
             }
         });
 
@@ -154,7 +194,6 @@ public class PedidoActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Debe seleccionar un plato del menú.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-
                     String correo = correoPedidoNuevo.getText().toString();
                     String direccion = direccionPedidoNuevo.getText().toString();
                     String tipoEnvio;
@@ -163,6 +202,7 @@ public class PedidoActivity extends AppCompatActivity {
                     } else {
                         tipoEnvio = botonTakeawayPedido.getText().toString();
                     }
+
 
                     Pedido nuevoPedido = new Pedido(correo, direccion, tipoEnvio);
 
@@ -194,6 +234,19 @@ public class PedidoActivity extends AppCompatActivity {
         });
     }
 
+
+//    public List<Pedido> getPedidoList() {
+//        Call<List<Pedido>> invocacionSyn = pedidoService.getPedidoList();
+//        Response<List<Pedido>> res = null;
+//        try {
+//            res = invocacionSyn.execute();
+//        }
+//        catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return res.body();
+//    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -208,9 +261,23 @@ public class PedidoActivity extends AppCompatActivity {
                 nombrePlato.setText(tituloPlato);
                 totalNuevoPedido.setText(total+"");
             }
+            else if (data.hasExtra("ubicacion")){
+                LatLng ubicacion = data.getParcelableExtra("ubicacion");
+                if (ubicacion.longitude != 0 && ubicacion.latitude != 0){
+                    direccionPedidoNuevo.setText("Ubicación agregada a través de Google Maps.");
+                    direccionPedidoNuevo.setEnabled(false);
+                }
+                else {
+                    Toast.makeText(this, "No se agregó ninguna ubicación, intente nuevamente.", Toast.LENGTH_LONG).show();
+                    direccionPedidoNuevo.setText("");
+                }
+                //direccionPedidoNuevo.setText(ubicacion.toString());
+
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    @SuppressLint("StaticFieldLeak")
     class Task extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {

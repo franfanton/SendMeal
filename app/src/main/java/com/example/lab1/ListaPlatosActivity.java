@@ -2,15 +2,20 @@ package com.example.lab1;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,10 @@ import com.example.lab1.Repository.Plato.AppRepository;
 import com.example.lab1.Servicios.Plato.PlatoService;
 import com.example.lab1.model.AdapterListaPlatos;
 import com.example.lab1.model.Plato;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,6 +49,7 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
     private int CODIGO_ACTIVIDAD = -1;
     private Button btnAgregarPlato;
     String titulo, precio, unidades;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     // FIN PRUEBA
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,7 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
         // LAB 4
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3001/")
+                .baseUrl("http://10.0.2.2:5000/")
                 // En la siguiente linea, le especificamos a Retrofit que tiene que usar Gson para deserializar nuestros objetos
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -76,14 +86,20 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
             }
         });
 
-
         AppRepository repository = new AppRepository(this.getApplication());
+//        repository.buscarTodos(new com.example.lab1.Helpers.Callback<String>() {
+//            @Override
+//            public void onCallback(String s) {
+//                Log.i("info","Pedido agregado correctamente");
+//                Toast.makeText(getApplicationContext(),"El codigo de error es: "+s,Toast.LENGTH_LONG).show();
+//            }
+//        });
         // FIN LAB 4
 
         // PRUEBA
         final RecyclerView rvPruebas = findViewById(R.id.rvPruebas);
-        //listaPruebas = (List<Plato>)callPlatos;
         listaPruebas = new ArrayList<>();
+
         listaPruebas.add(new Plato(R.drawable.pizza,"Pizza","Pizza casera con salsa de tomate, finas hierbas y queso cremoso.","350","750", "0"));
         listaPruebas.add(new Plato(R.drawable.tallarines,"Tallarines","Pasta casera con queso y salsa de tomates.","300","400", "0"));
         listaPruebas.add(new Plato(R.drawable.pollo,"Pollo","Pollo a la parrilla con salsa de chimichurri.","450","450", "0"));
@@ -137,6 +153,7 @@ public class ListaPlatosActivity extends AppCompatActivity implements AppReposit
                     String datoDescripcion = extras.getString("descripcion");
                     String datoPrecio = extras.getString("precio");
                     String datoCalorias = extras.getString("calorias");
+
                     listaPruebas.add(new Plato(R.drawable.plato,datoTitulo,datoDescripcion, datoPrecio,datoCalorias,null));
                     //Plato nuevoPlato = new Plato(R.drawable.plato, datoTitulo,datoDescripcion, datoPrecio,datoCalorias,"0");
                     //Call<Plato> createPlato = platoService.createPlato(nuevoPlato);

@@ -1,8 +1,14 @@
 package com.example.lab1.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lab1.ListaPlatosActivity;
 import com.example.lab1.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -26,11 +36,15 @@ public class AdapterListaPlatos extends RecyclerView.Adapter<AdapterListaPlatos.
     private final int CODIGO_ACTIVIDAD;
     private View.OnClickListener listener;
     private String unidades;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
 
     public AdapterListaPlatos(List<Plato> listaPrueba, int CODIGO_ACTIVIDAD){
         this.listaPrueba = listaPrueba;
         this.CODIGO_ACTIVIDAD = CODIGO_ACTIVIDAD;
+
     }
+
 
     @NonNull
     @Override
@@ -42,7 +56,41 @@ public class AdapterListaPlatos extends RecyclerView.Adapter<AdapterListaPlatos.
 
     @Override
     public void onBindViewHolder(@NonNull final PruebaViewHolder pruebaViewHolder, final int i) {
-        pruebaViewHolder.ivImagen.setImageResource(listaPrueba.get(i).getImagen());
+
+        if(listaPrueba.get(i).getImagen() == R.drawable.plato){
+            //LAB 5
+            ImageView imageView = null;
+            //StorageReference gsReference = storage.getReferenceFromUrl("gs://bucket/images/something.jpg");
+            StorageReference gsReference = storage.getReferenceFromUrl("gs://dam-lab05.appspot.com/images/"+listaPrueba.get(i).getTitulo()+".jpeg");
+//                    StorageReference storageRef = storage.getReferenceFromUrl("gs://MyProject.appspot.com/");
+            //gsReference.child("MyFolder/MyPict.jpg").getDownloadUrl().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Uri>() {
+
+            final long MEGABYTES = 6 * 1024 * 1024;
+            gsReference.getBytes(MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Exito
+                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    DisplayMetrics dm = new DisplayMetrics();
+                    //getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+//                    imageView.setMinimumHeight(dm.heightPixels);
+//                    imageView.setMinimumWidth(dm.widthPixels);
+//                    imageView.setImageBitmap(bm);
+                    pruebaViewHolder.ivImagen.setImageBitmap(bm);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Error - Cargar una imagen por defecto
+                    pruebaViewHolder.ivImagen.setImageResource(listaPrueba.get(i).getImagen());
+                    Log.d("DEBUG", "Error Failure"+exception.getMessage());
+                }
+            });
+        }
+        else {
+            pruebaViewHolder.ivImagen.setImageResource(listaPrueba.get(i).getImagen());
+        }
         pruebaViewHolder.tvTitulo.setText(listaPrueba.get(i).getTitulo());
         pruebaViewHolder.tvPrecio.setText(listaPrueba.get(i).getPrecio());
         pruebaViewHolder.tvCalorias.setText(listaPrueba.get(i).getCalorias());
@@ -103,7 +151,7 @@ public class AdapterListaPlatos extends RecyclerView.Adapter<AdapterListaPlatos.
         }
     }
 
-    public class PruebaViewHolder extends RecyclerView.ViewHolder {
+    public static class PruebaViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImagen;
         TextView tvTitulo,tvPrecio,tvCalorias,tvDescripcion,tvUnidades, tvAgregarPlato;
         EditText etUnidades;
