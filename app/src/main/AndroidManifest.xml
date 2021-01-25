@@ -33,6 +33,17 @@
             </intent-filter>
         </activity>
         <receiver android:name = ".MyNotificationPublisher" />
+
+        <!--SERVICIO PARA NOTIFICACION PUSH DE FIREBASE-->
+        <service
+            android:name=".Servicios.MyFirebaseMessagingService"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
